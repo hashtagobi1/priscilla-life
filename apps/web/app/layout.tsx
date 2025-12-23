@@ -5,6 +5,7 @@ import './globals.css'
 import { Navigation } from '@/components/shared/Navigation'
 import { Footer } from '@/components/shared/Footer'
 import { QueryProvider } from '@/components/providers/QueryProvider'
+import { PageTransition } from '@/components/transitions/PageTransition'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,7 +24,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <QueryProvider>
           <Navigation />
-          <main className="min-h-screen">{children}</main>
+          <main className="min-h-screen">
+            <PageTransition>{children}</PageTransition>
+          </main>
           <Footer />
         </QueryProvider>
       </body>
