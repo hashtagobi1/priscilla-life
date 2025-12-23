@@ -19,8 +19,8 @@ export default function MusicPage() {
         >
           <Music className="h-12 w-12 text-primary" />
         </motion.div>
-        <h1 className="mb-4 text-5xl font-bold md:text-6xl">Music</h1>
-        <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+        <h1 className="mb-6 text-6xl font-serif font-medium md:text-7xl">Music</h1>
+        <p className="mx-auto max-w-2xl text-lg text-muted-foreground font-light">
           Discover Priscilla's musical journey through her latest releases and
           streaming platforms
         </p>
@@ -58,18 +58,18 @@ export default function MusicPage() {
       )}
 
       {/* Streaming Platforms Section */}
-      <div className="mt-16 rounded-lg bg-secondary/50 p-8 text-center">
-        <Radio className="mx-auto mb-4 h-10 w-10 text-primary" />
-        <h2 className="mb-4 text-2xl font-semibold">Stream Everywhere</h2>
-        <p className="mb-6 text-muted-foreground">
+      <div className="mt-20 rounded-2xl bg-white/60 backdrop-blur-sm border border-border/50 p-12 text-center floating">
+        <Radio className="mx-auto mb-6 h-12 w-12 text-primary" />
+        <h2 className="mb-4 text-3xl font-serif font-medium">Stream Everywhere</h2>
+        <p className="mb-8 text-muted-foreground font-light">
           Find Priscilla's music on all major streaming platforms
         </p>
-        <div className="flex flex-wrap justify-center gap-4">
+        <div className="flex flex-wrap justify-center gap-3">
           {['Spotify', 'Apple Music', 'YouTube', 'SoundCloud'].map(
             (platform) => (
               <div
                 key={platform}
-                className="rounded-lg bg-background px-6 py-3 font-medium"
+                className="rounded-full bg-secondary/50 px-6 py-3 font-medium text-sm border border-border/30"
               >
                 {platform}
               </div>

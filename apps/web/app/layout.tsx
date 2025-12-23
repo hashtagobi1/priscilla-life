@@ -7,7 +7,11 @@ import { Footer } from '@/components/shared/Footer'
 import { QueryProvider } from '@/components/providers/QueryProvider'
 import { PageTransition } from '@/components/transitions/PageTransition'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-sans',
+})
 
 export const metadata: Metadata = {
   title: {
@@ -38,7 +42,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={`${inter.variable} font-sans`}>
         <QueryProvider>
           <Navigation />
           <main className="min-h-screen">

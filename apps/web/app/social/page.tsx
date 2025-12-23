@@ -26,8 +26,8 @@ export default function SocialPage() {
         >
           <Users className="h-12 w-12 text-primary" />
         </motion.div>
-        <h1 className="mb-4 text-5xl font-bold md:text-6xl">Social</h1>
-        <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+        <h1 className="mb-6 text-6xl font-serif font-medium md:text-7xl">Social</h1>
+        <p className="mx-auto max-w-2xl text-lg text-muted-foreground font-light">
           Connect with Priscilla across all social media platforms
         </p>
       </div>
@@ -57,7 +57,7 @@ export default function SocialPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="rounded-lg bg-secondary/50 p-8"
+                className="rounded-2xl bg-white/80 backdrop-blur-sm border border-border/50 p-10 floating"
               >
                 <div className="mb-6 flex items-center justify-between">
                   <div className="flex items-center gap-4">
@@ -65,7 +65,7 @@ export default function SocialPage() {
                       <Icon className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <h2 className="text-2xl font-semibold">
+                      <h2 className="text-2xl font-serif font-medium">
                         {platform.platform}
                       </h2>
                       {platform.followers && (
@@ -88,7 +88,7 @@ export default function SocialPage() {
                       {platform.achievements.map((achievement, idx) => (
                         <span
                           key={idx}
-                          className="rounded-full bg-primary/10 px-3 py-1 text-sm text-primary"
+                          className="rounded-full bg-primary/10 border border-primary/20 px-4 py-2 text-sm text-primary font-light"
                         >
                           {achievement}
                         </span>

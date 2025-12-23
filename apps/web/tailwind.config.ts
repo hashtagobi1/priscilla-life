@@ -33,6 +33,15 @@ const config: Config = {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      fontFamily: {
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        serif: ['Cormorant Garamond', 'serif'],
+      },
+      boxShadow: {
+        'soft': 'var(--shadow)',
+        'soft-md': 'var(--shadow-md)',
+        'soft-lg': 'var(--shadow-lg)',
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],

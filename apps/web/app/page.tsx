@@ -1,39 +1,58 @@
+'use client'
+
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 
 export default function HomePage() {
+  const domains = [
+    { href: '/music', label: 'Music', emoji: '🎵' },
+    { href: '/host', label: 'Host', emoji: '🎤' },
+    { href: '/food', label: 'Food', emoji: '🍽️' },
+    { href: '/social', label: 'Social', emoji: '📱' },
+  ]
+
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="text-center space-y-8 px-4">
-        <h1 className="text-5xl md:text-7xl font-bold">Priscilla</h1>
-        <p className="text-xl md:text-2xl text-muted-foreground">
-          Music • Host • Food • Social
-        </p>
-        <div className="flex flex-wrap gap-4 justify-center mt-12">
-          <Link
-            href="/music"
-            className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition"
-          >
-            Music
-          </Link>
-          <Link
-            href="/host"
-            className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition"
-          >
-            Host
-          </Link>
-          <Link
-            href="/food"
-            className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition"
-          >
-            Food
-          </Link>
-          <Link
-            href="/social"
-            className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition"
-          >
-            Social
-          </Link>
-        </div>
+    <div className="min-h-screen flex items-center justify-center px-4 py-20">
+      <div className="text-center space-y-12 max-w-4xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1 className="text-6xl md:text-8xl font-serif font-medium mb-6 text-foreground">
+            Priscilla Dina Toko
+          </h1>
+          <p className="text-xl md:text-2xl text-muted-foreground font-light tracking-wide">
+            Music • Host • Food • Social
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16"
+        >
+          {domains.map((domain, index) => (
+            <Link
+              key={domain.href}
+              href={domain.href}
+              className="group"
+            >
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + index * 0.1 }}
+                className="floating floating-hover rounded-2xl bg-white/80 backdrop-blur-sm p-8 border border-border/50 hover:border-primary/30 transition-all duration-300"
+              >
+                <div className="text-4xl mb-3">{domain.emoji}</div>
+                <div className="text-lg font-medium text-foreground group-hover:text-primary transition-colors">
+                  {domain.label}
+                </div>
+              </motion.div>
+            </Link>
+          ))}
+        </motion.div>
       </div>
     </div>
   )

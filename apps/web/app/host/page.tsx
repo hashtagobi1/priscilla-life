@@ -21,10 +21,10 @@ export default function HostPage() {
         >
           <Mic className="h-12 w-12 text-primary" />
         </motion.div>
-        <h1 className="mb-4 text-5xl font-bold md:text-6xl">
+        <h1 className="mb-6 text-6xl font-serif font-medium md:text-7xl">
           Host & Presenter
         </h1>
-        <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+        <p className="mx-auto max-w-2xl text-lg text-muted-foreground font-light">
           Professional hosting and presenting services for events, shows, and
           conferences
         </p>
@@ -92,16 +92,18 @@ export default function HostPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="mt-16"
+        className="mt-20"
       >
-        <div className="mb-6 text-center">
-          <Star className="mx-auto mb-4 h-10 w-10 text-primary" />
-          <h2 className="mb-2 text-2xl font-semibold">Book Priscilla</h2>
-          <p className="text-muted-foreground">
+        <div className="mb-8 text-center">
+          <Star className="mx-auto mb-6 h-12 w-12 text-primary" />
+          <h2 className="mb-3 text-3xl font-serif font-medium">Book Priscilla</h2>
+          <p className="text-muted-foreground font-light">
             Fill out the form below to discuss your hosting needs
           </p>
         </div>
-        <BookingForm />
+        <div className="max-w-2xl mx-auto">
+          <BookingForm />
+        </div>
       </motion.div>
     </div>
   )

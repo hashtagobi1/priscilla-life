@@ -18,23 +18,23 @@ export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          <Link href="/" className="text-xl font-bold">
+    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60 border-b border-border/50">
+      <div className="container mx-auto px-6">
+        <div className="flex items-center justify-between h-20">
+          <Link href="/" className="text-2xl font-serif font-medium text-foreground hover:text-primary transition-colors">
             Priscilla
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-2">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                   pathname === item.href
-                    ? 'bg-primary text-primary-foreground'
-                    : 'text-foreground/60 hover:text-foreground'
+                    ? 'bg-primary/10 text-primary'
+                    : 'text-foreground/60 hover:text-foreground hover:bg-secondary/50'
                 }`}
               >
                 {item.label}
@@ -54,16 +54,16 @@ export function Navigation() {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 space-y-2">
+          <div className="md:hidden py-6 space-y-2">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block px-3 py-2 rounded-md text-base font-medium ${
+                className={`block px-4 py-3 rounded-full text-base font-medium transition-all ${
                   pathname === item.href
-                    ? 'bg-primary text-primary-foreground'
-                    : 'text-foreground/60'
+                    ? 'bg-primary/10 text-primary'
+                    : 'text-foreground/60 hover:bg-secondary/50'
                 }`}
               >
                 {item.label}

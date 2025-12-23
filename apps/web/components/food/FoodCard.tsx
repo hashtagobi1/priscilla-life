@@ -19,7 +19,7 @@ export function FoodCard({ food, index }: FoodCardProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
-      className="group overflow-hidden rounded-lg bg-secondary/50 transition-all hover:bg-secondary"
+      className="group overflow-hidden rounded-2xl bg-white/80 backdrop-blur-sm border border-border/50 floating floating-hover transition-all duration-300"
     >
       {firstImage && (
         <div className="relative h-64 w-full overflow-hidden">
@@ -51,9 +51,9 @@ export function FoodCard({ food, index }: FoodCardProps) {
           )}
         </div>
 
-        <h3 className="mb-2 text-xl font-semibold">{food.title}</h3>
+        <h3 className="mb-2 text-xl font-serif font-medium">{food.title}</h3>
         {food.description && (
-          <p className="text-sm text-muted-foreground line-clamp-2">
+          <p className="text-sm text-muted-foreground line-clamp-2 font-light">
             {food.description}
           </p>
         )}

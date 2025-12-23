@@ -66,7 +66,7 @@ export function BookingForm() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       onSubmit={handleSubmit}
-      className="space-y-6 rounded-lg bg-secondary/50 p-6"
+      className="space-y-6 rounded-2xl bg-white/80 backdrop-blur-sm border border-border/50 p-8 floating"
     >
       <div className="grid gap-6 md:grid-cols-2">
         <div>
@@ -79,7 +79,7 @@ export function BookingForm() {
             required
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="w-full rounded-md border border-border bg-background px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full rounded-xl border border-border/50 bg-background px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-light"
           />
         </div>
 
@@ -93,7 +93,7 @@ export function BookingForm() {
             required
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            className="w-full rounded-md border border-border bg-background px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full rounded-xl border border-border/50 bg-background px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-light"
           />
         </div>
 
@@ -106,7 +106,7 @@ export function BookingForm() {
             id="phone"
             value={formData.phone}
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-            className="w-full rounded-md border border-border bg-background px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full rounded-xl border border-border/50 bg-background px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-light"
           />
         </div>
 
@@ -119,7 +119,7 @@ export function BookingForm() {
             required
             value={formData.eventType}
             onChange={(e) => setFormData({ ...formData, eventType: e.target.value })}
-            className="w-full rounded-md border border-border bg-background px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full rounded-xl border border-border/50 bg-background px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-light"
           >
             <option value="">Select event type</option>
             <option value="wedding">Wedding</option>
@@ -140,7 +140,7 @@ export function BookingForm() {
             required
             value={formData.eventDate}
             onChange={(e) => setFormData({ ...formData, eventDate: e.target.value })}
-            className="w-full rounded-md border border-border bg-background px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full rounded-xl border border-border/50 bg-background px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-light"
           />
         </div>
 
@@ -154,7 +154,7 @@ export function BookingForm() {
             min="1"
             value={formData.guestCount}
             onChange={(e) => setFormData({ ...formData, guestCount: e.target.value })}
-            className="w-full rounded-md border border-border bg-background px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full rounded-xl border border-border/50 bg-background px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-light"
           />
         </div>
       </div>
@@ -188,7 +188,7 @@ export function BookingForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"
+        className="flex w-full items-center justify-center gap-2 rounded-full bg-primary px-8 py-4 font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:scale-[1.02] disabled:opacity-50 disabled:hover:scale-100 floating"
       >
         {isSubmitting ? (
           <>
