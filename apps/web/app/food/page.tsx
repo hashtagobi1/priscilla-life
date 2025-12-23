@@ -1,10 +1,80 @@
+'use client'
+
+import { useFood } from '@/lib/sanity/hooks'
+import { FoodCard } from '@/components/food/FoodCard'
+import { UtensilsCrossed, ChefHat, Calendar } from 'lucide-react'
+import { motion } from 'framer-motion'
+
 export default function FoodPage() {
+  const { data: food, isLoading, error } = useFood()
+
   return (
     <div className="container mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold mb-8">Food & Catering</h1>
-      <p className="text-muted-foreground">Food content coming soon...</p>
+      {/* Header */}
+      <div className="mb-12 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-4 flex justify-center"
+        >
+          <ChefHat className="h-12 w-12 text-primary" />
+        </motion.div>
+        <h1 className="mb-4 text-5xl font-bold md:text-6xl">
+          Food & Catering
+        </h1>
+        <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+          Culinary excellence for weddings, corporate events, and private
+          gatherings
+        </p>
+      </div>
+
+      {/* Loading State */}
+      {isLoading && (
+        <div className="flex items-center justify-center py-20">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        </div>
+      )}
+
+      {/* Error State */}
+      {error && (
+        <div className="rounded-lg bg-destructive/10 p-4 text-center text-destructive">
+          <p>Failed to load food portfolio. Please try again later.</p>
+        </div>
+      )}
+
+      {/* Food Grid */}
+      {food && food.length > 0 ? (
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {food.map((item, index) => (
+            <FoodCard key={item._id} food={item} index={index} />
+          ))}
+        </div>
+      ) : (
+        !isLoading && (
+          <div className="py-20 text-center text-muted-foreground">
+            <UtensilsCrossed className="mx-auto mb-4 h-16 w-16 opacity-50" />
+            <p className="text-lg">No food portfolio available yet.</p>
+          </div>
+        )
+      )}
+
+      {/* Inquiry CTA */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="mt-16 rounded-lg bg-primary/10 p-8 text-center"
+      >
+        <Calendar className="mx-auto mb-4 h-10 w-10 text-primary" />
+        <h2 className="mb-4 text-2xl font-semibold">Catering Inquiry</h2>
+        <p className="mb-6 text-muted-foreground">
+          Planning an event? Let's discuss your catering needs and create a
+          memorable culinary experience.
+        </p>
+        <button className="rounded-lg bg-primary px-8 py-3 font-medium text-primary-foreground transition-colors hover:bg-primary/90">
+          Request a Quote
+        </button>
+      </motion.div>
     </div>
   )
 }
-
-
