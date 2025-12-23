@@ -1,0 +1,13 @@
+{
+  "name": "populate-sanity",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "populate": "node populate-sanity.js"
+  },
+  "dependencies": {
+    "@sanity/client": "^6.13.3",
+    "dotenv": "^16.4.5"
+  }
+}
+

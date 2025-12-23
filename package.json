@@ -8,7 +8,8 @@
     "build": "pnpm --filter web build",
     "start": "pnpm --filter web start",
     "studio": "pnpm --filter studio dev",
-    "type-check": "pnpm -r type-check"
+    "type-check": "pnpm -r type-check",
+    "populate": "cd scripts && pnpm install && pnpm populate"
   }
 }
 
