@@ -31,17 +31,25 @@ pnpm install
 
 ### 2. Set Up Environment Variables
 
-Copy the example env files and add your Sanity project credentials:
-
+**Quick Setup (Recommended):**
 ```bash
-# For Next.js app
-cp apps/web/.env.local.example apps/web/.env.local
-
-# For Sanity Studio
-cp apps/studio/.env.local.example apps/studio/.env.local
+./setup-env.sh YOUR_SANITY_PROJECT_ID
 ```
 
-Then update the files with your Sanity project ID and dataset.
+**Manual Setup:**
+Create these files with your Sanity project credentials:
+
+**`apps/web/.env.local`**
+```env
+NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
+NEXT_PUBLIC_SANITY_DATASET=production
+```
+
+**`apps/studio/.env.local`**
+```env
+SANITY_PROJECT_ID=your_project_id
+SANITY_DATASET=production
+```
 
 ### 3. Run Development Servers
 
@@ -63,6 +71,16 @@ pnpm studio
 
 ## Deployment
 
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
+
 The project is set up for deployment on Vercel. Make sure to set environment variables in your deployment platform.
 
+## Troubleshooting
 
+### Sanity Studio Error: "Configuration must contain `projectId`"
+- Make sure you've created `apps/studio/.env.local` with your `SANITY_PROJECT_ID`
+- Run `./setup-env.sh YOUR_PROJECT_ID` to create the files automatically
+
+### Next.js can't connect to Sanity
+- Verify `apps/web/.env.local` exists with `NEXT_PUBLIC_SANITY_PROJECT_ID`
+- Restart the dev server after creating/updating env files
