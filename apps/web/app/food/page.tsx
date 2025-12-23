@@ -2,6 +2,7 @@
 
 import { useFood } from '@/lib/sanity/hooks'
 import { FoodCard } from '@/components/food/FoodCard'
+import { BookingForm } from '@/components/forms/BookingForm'
 import { UtensilsCrossed, ChefHat, Calendar } from 'lucide-react'
 import { motion } from 'framer-motion'
 
@@ -58,22 +59,21 @@ export default function FoodPage() {
         )
       )}
 
-      {/* Inquiry CTA */}
+      {/* Inquiry Form */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="mt-16 rounded-lg bg-primary/10 p-8 text-center"
+        className="mt-16"
       >
-        <Calendar className="mx-auto mb-4 h-10 w-10 text-primary" />
-        <h2 className="mb-4 text-2xl font-semibold">Catering Inquiry</h2>
-        <p className="mb-6 text-muted-foreground">
-          Planning an event? Let's discuss your catering needs and create a
-          memorable culinary experience.
-        </p>
-        <button className="rounded-lg bg-primary px-8 py-3 font-medium text-primary-foreground transition-colors hover:bg-primary/90">
-          Request a Quote
-        </button>
+        <div className="mb-6 text-center">
+          <Calendar className="mx-auto mb-4 h-10 w-10 text-primary" />
+          <h2 className="mb-2 text-2xl font-semibold">Catering Inquiry</h2>
+          <p className="text-muted-foreground">
+            Fill out the form below to request a quote for your event
+          </p>
+        </div>
+        <BookingForm />
       </motion.div>
     </div>
   )

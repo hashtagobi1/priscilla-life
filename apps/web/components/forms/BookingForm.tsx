@@ -1,0 +1,208 @@
+'use client'
+
+import { useState } from 'react'
+import { motion } from 'framer-motion'
+import { Send, Loader2 } from 'lucide-react'
+
+interface BookingFormData {
+  name: string
+  email: string
+  phone: string
+  eventType: string
+  eventDate: string
+  guestCount: string
+  message: string
+}
+
+export function BookingForm() {
+  const [formData, setFormData] = useState<BookingFormData>({
+    name: '',
+    email: '',
+    phone: '',
+    eventType: '',
+    eventDate: '',
+    guestCount: '',
+    message: '',
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setSubmitStatus('idle')
+
+    try {
+      // TODO: Replace with actual API endpoint
+      const response = await fetch('/api/booking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+
+      if (response.ok) {
+        setSubmitStatus('success')
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          eventType: '',
+          eventDate: '',
+          guestCount: '',
+          message: '',
+        })
+      } else {
+        setSubmitStatus('error')
+      }
+    } catch (error) {
+      setSubmitStatus('error')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  return (
+    <motion.form
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      onSubmit={handleSubmit}
+      className="space-y-6 rounded-lg bg-secondary/50 p-6"
+    >
+      <div className="grid gap-6 md:grid-cols-2">
+        <div>
+          <label htmlFor="name" className="mb-2 block text-sm font-medium">
+            Name *
+          </label>
+          <input
+            type="text"
+            id="name"
+            required
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            className="w-full rounded-md border border-border bg-background px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="email" className="mb-2 block text-sm font-medium">
+            Email *
+          </label>
+          <input
+            type="email"
+            id="email"
+            required
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            className="w-full rounded-md border border-border bg-background px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="phone" className="mb-2 block text-sm font-medium">
+            Phone
+          </label>
+          <input
+            type="tel"
+            id="phone"
+            value={formData.phone}
+            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            className="w-full rounded-md border border-border bg-background px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="eventType" className="mb-2 block text-sm font-medium">
+            Event Type *
+          </label>
+          <select
+            id="eventType"
+            required
+            value={formData.eventType}
+            onChange={(e) => setFormData({ ...formData, eventType: e.target.value })}
+            className="w-full rounded-md border border-border bg-background px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            <option value="">Select event type</option>
+            <option value="wedding">Wedding</option>
+            <option value="corporate">Corporate</option>
+            <option value="private">Private Event</option>
+            <option value="charity">Charity</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="eventDate" className="mb-2 block text-sm font-medium">
+            Event Date *
+          </label>
+          <input
+            type="date"
+            id="eventDate"
+            required
+            value={formData.eventDate}
+            onChange={(e) => setFormData({ ...formData, eventDate: e.target.value })}
+            className="w-full rounded-md border border-border bg-background px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="guestCount" className="mb-2 block text-sm font-medium">
+            Guest Count
+          </label>
+          <input
+            type="number"
+            id="guestCount"
+            min="1"
+            value={formData.guestCount}
+            onChange={(e) => setFormData({ ...formData, guestCount: e.target.value })}
+            className="w-full rounded-md border border-border bg-background px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label htmlFor="message" className="mb-2 block text-sm font-medium">
+          Message
+        </label>
+        <textarea
+          id="message"
+          rows={4}
+          value={formData.message}
+          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+          className="w-full rounded-md border border-border bg-background px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+          placeholder="Tell us about your event..."
+        />
+      </div>
+
+      {submitStatus === 'success' && (
+        <div className="rounded-lg bg-green-500/10 p-4 text-green-600">
+          Thank you! Your inquiry has been sent successfully.
+        </div>
+      )}
+
+      {submitStatus === 'error' && (
+        <div className="rounded-lg bg-destructive/10 p-4 text-destructive">
+          Something went wrong. Please try again.
+        </div>
+      )}
+
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"
+      >
+        {isSubmitting ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" />
+            Sending...
+          </>
+        ) : (
+          <>
+            <Send className="h-4 w-4" />
+            Send Inquiry
+          </>
+        )}
+      </button>
+    </motion.form>
+  )
+}
+

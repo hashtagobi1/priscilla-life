@@ -10,8 +10,25 @@ import { PageTransition } from '@/components/transitions/PageTransition'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Priscilla - Music • Host • Food • Social',
-  description: 'Welcome to Priscilla\'s world',
+  title: {
+    default: 'Priscilla Dina Toko - Music • Host • Food • Social',
+    template: '%s | Priscilla Dina Toko',
+  },
+  description: 'Welcome to Priscilla Dina Toko\'s world - Music, Hosting, Food, and Social Media',
+  keywords: ['Priscilla Dina Toko', 'music', 'host', 'presenter', 'chef', 'catering', 'social media'],
+  authors: [{ name: 'Priscilla Dina Toko' }],
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    siteName: 'Priscilla Dina Toko',
+    title: 'Priscilla Dina Toko - Music • Host • Food • Social',
+    description: 'Welcome to Priscilla Dina Toko\'s world',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Priscilla Dina Toko',
+    description: 'Music • Host • Food • Social',
+  },
 }
 
 export default function RootLayout({

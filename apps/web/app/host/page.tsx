@@ -2,6 +2,7 @@
 
 import { useHost, useShowreel } from '@/lib/sanity/hooks'
 import { EventCard } from '@/components/host/EventCard'
+import { BookingForm } from '@/components/forms/BookingForm'
 import { Mic, Video, Calendar, Star } from 'lucide-react'
 import { motion } from 'framer-motion'
 
@@ -86,22 +87,21 @@ export default function HostPage() {
         )
       )}
 
-      {/* Booking CTA */}
+      {/* Booking Form */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="mt-16 rounded-lg bg-primary/10 p-8 text-center"
+        className="mt-16"
       >
-        <Star className="mx-auto mb-4 h-10 w-10 text-primary" />
-        <h2 className="mb-4 text-2xl font-semibold">Book Priscilla</h2>
-        <p className="mb-6 text-muted-foreground">
-          Interested in booking Priscilla for your next event? Get in touch to
-          discuss your requirements.
-        </p>
-        <button className="rounded-lg bg-primary px-8 py-3 font-medium text-primary-foreground transition-colors hover:bg-primary/90">
-          Contact for Booking
-        </button>
+        <div className="mb-6 text-center">
+          <Star className="mx-auto mb-4 h-10 w-10 text-primary" />
+          <h2 className="mb-2 text-2xl font-semibold">Book Priscilla</h2>
+          <p className="text-muted-foreground">
+            Fill out the form below to discuss your hosting needs
+          </p>
+        </div>
+        <BookingForm />
       </motion.div>
     </div>
   )
