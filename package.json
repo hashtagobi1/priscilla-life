@@ -1,0 +1,15 @@
+{
+  "name": "priscilla-life",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@8.6.10",
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "build": "pnpm --filter web build",
+    "start": "pnpm --filter web start",
+    "studio": "pnpm --filter studio dev",
+    "type-check": "pnpm -r type-check"
+  }
+}
+
+
