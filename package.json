@@ -9,7 +9,7 @@
     "start": "pnpm --filter web start",
     "studio": "pnpm --filter studio dev",
     "type-check": "pnpm -r type-check",
-    "populate": "cd scripts && pnpm install && pnpm populate"
+    "populate": "pnpm --filter populate-sanity populate"
   }
 }
 
