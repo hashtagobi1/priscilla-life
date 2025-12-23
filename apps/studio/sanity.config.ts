@@ -17,18 +17,4 @@ export default defineConfig({
   },
 })
 
-export default defineConfig({
-  name: 'default',
-  title: 'Priscilla Life CMS',
-
-  projectId,
-  dataset,
-
-  plugins: [structureTool(), visionTool()],
-
-  schema: {
-    types: schemaTypes,
-  },
-})
-
 
