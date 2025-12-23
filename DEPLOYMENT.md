@@ -33,12 +33,14 @@
 4. Import your `priscilla-life` repository
 
 ### Step 2: Configure Project Settings
-The `vercel.json` file is already configured, but if you need to set manually:
-- **Framework Preset**: Next.js
-- **Root Directory**: `apps/web`
-- **Install Command**: `cd ../.. && pnpm install` (installs from monorepo root)
-- **Build Command**: `pnpm build` (runs from apps/web directory)
+**Important:** Set the Root Directory in Vercel Dashboard (not in vercel.json):
+- **Framework Preset**: Next.js (auto-detected)
+- **Root Directory**: `apps/web` ⚠️ **Set this in Vercel Dashboard → Settings → General**
+- **Install Command**: `cd ../.. && pnpm install` (auto from vercel.json)
+- **Build Command**: `pnpm build` (auto from vercel.json)
 - **Output Directory**: `.next` (default, auto-detected by Next.js)
+
+The `vercel.json` file handles build/install commands, but Root Directory must be set in the Vercel project settings.
 
 ### Step 3: Add Environment Variables
 In Vercel project settings, add these environment variables:
