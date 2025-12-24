@@ -127,11 +127,11 @@ export function FoodCard({ food, index }: FoodCardProps) {
           >
             {food.title}
           </motion.h3>
-          {food.description && (
-            <p className="text-sm text-muted-foreground line-clamp-2 font-light">
-              {food.description}
-            </p>
-          )}
+                {food.description && (
+                  <p className="text-sm text-muted-foreground font-light">
+                    {food.description}
+                  </p>
+                )}
 
           {food.media && food.media.length > 1 && (
             <motion.p
