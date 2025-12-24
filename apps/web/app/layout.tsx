@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import type { ReactNode } from 'react'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { Navigation } from '@/components/shared/Navigation'
@@ -38,7 +37,7 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: {
-  children: ReactNode
+  children: React.ReactNode
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
