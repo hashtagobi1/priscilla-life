@@ -20,7 +20,7 @@ export function FoodCard({ food, index }: FoodCardProps) {
   // Get first media item for card preview
   const firstMedia = food.media && food.media.length > 0 ? food.media[0] : null
   const firstImageUrl = firstMedia?.type === 'image' && firstMedia.image && firstMedia.image.asset?._ref
-    ? urlFor(firstMedia.image)
+    ? urlFor(firstMedia.image, { width: 800, height: 600, quality: 85 })
     : null
 
   const handleMediaClick = () => {

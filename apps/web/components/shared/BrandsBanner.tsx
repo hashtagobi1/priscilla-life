@@ -25,7 +25,7 @@ export function BrandsBanner() {
       </div>
       <div className="flex items-center gap-12 animate-scroll hover:[animation-play-state:paused]">
         {duplicatedBrands.map((brand, index) => {
-          const logoUrl = brand.logo ? urlFor(brand.logo) : null
+          const logoUrl = brand.logo ? urlFor(brand.logo, { width: 200, height: 100, quality: 80 }) : null
           if (!logoUrl) return null
 
           return (

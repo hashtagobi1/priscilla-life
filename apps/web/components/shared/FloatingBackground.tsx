@@ -42,7 +42,7 @@ export function FloatingBackground() {
       {backgroundImages.map((bgImage, index) => {
         // Handle both direct image object and nested image structure
         const imageObj = bgImage.image
-        const imageUrl = imageObj ? urlFor(imageObj) : null
+        const imageUrl = imageObj ? urlFor(imageObj, { width: 400, height: 400, quality: 75 }) : null
         
         if (!imageUrl) {
           console.warn('Background image missing URL:', bgImage)
@@ -78,7 +78,9 @@ export function FloatingBackground() {
                 fill
                 className="object-contain"
                 style={{ opacity }}
-                unoptimized
+                loading="lazy"
+                quality={75}
+                sizes="(max-width: 768px) 160px, 240px"
               />
             </div>
           </motion.div>

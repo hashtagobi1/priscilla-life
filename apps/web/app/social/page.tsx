@@ -123,7 +123,7 @@ export default function SocialPage() {
                     <h3 className="mb-4 font-semibold">Recent Posts</h3>
                     <div className="grid gap-4 md:grid-cols-3">
                       {platform.recentPosts.map((post, idx) => {
-                        const imageUrl = post.image ? urlFor(post.image) : null
+                        const imageUrl = post.image ? urlFor(post.image, { width: 600, height: 600, quality: 85 }) : null
                         return (
                           <motion.a
                             key={idx}

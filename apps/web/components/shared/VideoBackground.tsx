@@ -10,7 +10,7 @@ export function VideoBackground() {
   if (!backgroundVideo?.videoUrl) return null
 
   const opacity = (backgroundVideo.opacity || 30) / 100
-  const posterUrl = backgroundVideo.posterImage ? urlFor(backgroundVideo.posterImage) : null
+  const posterUrl = backgroundVideo.posterImage ? urlFor(backgroundVideo.posterImage, { width: 1920, height: 1080, quality: 80 }) : null
 
   // Extract video ID for YouTube loop
   const getYouTubeEmbedUrl = (url: string) => {

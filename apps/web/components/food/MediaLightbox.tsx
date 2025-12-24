@@ -44,9 +44,9 @@ export function MediaLightbox({ media, initialIndex = 0, onClose }: MediaLightbo
     return () => window.removeEventListener('keydown', handleKeyDownGlobal)
   }, [hasPrev, hasNext, onClose, goToPrev, goToNext])
 
-  const imageUrl = currentMedia?.type === 'image' && currentMedia.image
-    ? urlFor(currentMedia.image)
-    : null
+    const imageUrl = currentMedia?.type === 'image' && currentMedia.image
+      ? urlFor(currentMedia.image, { width: 1920, height: 1080, quality: 90 })
+      : null
 
   return (
     <AnimatePresence>
@@ -140,7 +140,7 @@ export function MediaLightbox({ media, initialIndex = 0, onClose }: MediaLightbo
         {media.length > 1 && (
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 max-w-4xl overflow-x-auto px-4 pb-2">
             {media.map((item, index) => {
-              const thumbUrl = item.type === 'image' && item.image && item.image.asset?._ref ? urlFor(item.image) : null
+                    const thumbUrl = item.type === 'image' && item.image && item.image.asset?._ref ? urlFor(item.image, { width: 160, height: 160, quality: 75 }) : null
               return (
                 <button
                   key={index}

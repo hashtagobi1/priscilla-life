@@ -12,7 +12,7 @@ interface MusicCardProps {
 }
 
 export function MusicCard({ music, index }: MusicCardProps) {
-  const imageUrl = music.coverImage ? urlFor(music.coverImage) : null
+  const imageUrl = music.coverImage ? urlFor(music.coverImage, { width: 600, height: 600, quality: 85 }) : null
 
   return (
     <motion.div

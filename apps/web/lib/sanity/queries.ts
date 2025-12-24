@@ -1,14 +1,21 @@
 import { sanityClient, imageUrlBuilder } from '../sanity'
 
-// Helper to get image URL
-export const urlFor = (source: any) => {
+// Helper to get image URL with optimization
+export const urlFor = (source: any, options?: { width?: number; height?: number; quality?: number }) => {
   if (!source || !imageUrlBuilder) return null
   // Check if source has a valid asset reference
   if (source.asset && (!source.asset._ref || source.asset._ref === '')) {
     return null
   }
   try {
-    return imageUrlBuilder.image(source).url()
+    let builder = imageUrlBuilder.image(source)
+    
+    // Apply optimization options
+    if (options?.width) builder = builder.width(options.width)
+    if (options?.height) builder = builder.height(options.height)
+    if (options?.quality) builder = builder.quality(options.quality)
+    
+    return builder.url()
   } catch (error) {
     console.warn('Error generating image URL:', error)
     return null
