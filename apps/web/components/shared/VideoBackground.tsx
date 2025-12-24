@@ -59,7 +59,7 @@ export function VideoBackground() {
           <div
             className="absolute inset-0 w-full h-full"
             style={{
-              transform: 'scale(1.15)',
+              transform: 'scale(1.3)',
               transformOrigin: 'center',
             }}
           >
@@ -79,7 +79,7 @@ export function VideoBackground() {
           <div
             className="absolute inset-0 w-full h-full"
             style={{
-              transform: 'scale(1.15)',
+              transform: 'scale(1.3)',
               transformOrigin: 'center',
             }}
           >
@@ -99,7 +99,7 @@ export function VideoBackground() {
           <div
             className="absolute inset-0 w-full h-full"
             style={{
-              transform: 'scale(1.15)',
+              transform: 'scale(1.3)',
               transformOrigin: 'center',
             }}
           >
@@ -124,7 +124,7 @@ export function VideoBackground() {
             playsInline
             className="absolute inset-0 w-full h-full object-cover"
             style={{
-              transform: 'scale(1.15)',
+              transform: 'scale(1.3)',
               objectPosition: 'center',
             }}
             poster={posterUrl || undefined}
