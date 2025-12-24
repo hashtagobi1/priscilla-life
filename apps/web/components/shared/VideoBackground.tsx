@@ -57,9 +57,8 @@ export function VideoBackground() {
       >
         {isYouTube ? (
           <div
-            className="absolute inset-0 w-full h-full"
+            className="absolute inset-0 w-full h-full md:scale-[1.15] scale-[1.5]"
             style={{
-              transform: 'scale(1.3)',
               transformOrigin: 'center',
             }}
           >
@@ -77,9 +76,8 @@ export function VideoBackground() {
           </div>
         ) : isTikTok ? (
           <div
-            className="absolute inset-0 w-full h-full"
+            className="absolute inset-0 w-full h-full md:scale-[1.15] scale-[1.5]"
             style={{
-              transform: 'scale(1.3)',
               transformOrigin: 'center',
             }}
           >
@@ -97,9 +95,8 @@ export function VideoBackground() {
           </div>
         ) : isVimeo ? (
           <div
-            className="absolute inset-0 w-full h-full"
+            className="absolute inset-0 w-full h-full md:scale-[1.15] scale-[1.5]"
             style={{
-              transform: 'scale(1.3)',
               transformOrigin: 'center',
             }}
           >
@@ -122,9 +119,9 @@ export function VideoBackground() {
             loop
             muted
             playsInline
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover md:scale-[1.15] scale-[1.5]"
             style={{
-              transform: 'scale(1.3)',
+              transformOrigin: 'center',
               objectPosition: 'center',
             }}
             poster={posterUrl || undefined}
