@@ -31,9 +31,20 @@ export function Footer() {
     <footer className="border-t border-border/50 mt-auto py-12">
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <p className="text-sm text-muted-foreground font-light">
-            &copy; {new Date().getFullYear()} Priscilla Dina Toko. All rights reserved.
-          </p>
+          <div className="flex flex-col items-center md:items-start gap-2">
+            <p className="text-sm text-muted-foreground font-light">
+              &copy; {new Date().getFullYear()} Priscilla Dina Toko. All rights reserved.
+            </p>
+            <motion.a
+              href="http://lightwave-agency.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ x: 2 }}
+              className="text-xs text-muted-foreground hover:text-primary transition-colors font-light"
+            >
+              Made by LightWave
+            </motion.a>
+          </div>
           
           {!isLoading && footerSocials.length > 0 && (
             <div className="flex items-center gap-4">

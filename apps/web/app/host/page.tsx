@@ -3,6 +3,7 @@
 import { useHost, useShowreel } from '@/lib/sanity/hooks'
 import { EventCard } from '@/components/host/EventCard'
 import { BookingForm } from '@/components/forms/BookingForm'
+import { VideoEmbed } from '@/components/shared/VideoEmbed'
 import { Mic, Video, Calendar, Star } from 'lucide-react'
 import { motion } from 'framer-motion'
 
@@ -41,22 +42,63 @@ export default function HostPage() {
             <Video className="h-6 w-6 text-primary" />
             <h2 className="text-3xl font-semibold">Showreel</h2>
           </div>
-          <div className="overflow-hidden rounded-lg bg-muted">
-            {showreel.videoUrl && (
-              <div className="aspect-video w-full">
-                <iframe
-                  src={showreel.videoUrl.replace('watch?v=', 'embed/')}
-                  title={showreel.title || 'Showreel'}
-                  className="h-full w-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              </div>
-            )}
-          </div>
-          {showreel.description && (
-            <p className="mt-4 text-muted-foreground">{showreel.description}</p>
-          )}
+          
+          {/* Detect if video is vertical (TikTok) or horizontal (YouTube) */}
+          {(() => {
+            const isVertical = showreel.videoUrl?.includes('tiktok.com')
+            const isHorizontal = showreel.videoUrl?.includes('youtube.com') || showreel.videoUrl?.includes('youtu.be') || showreel.videoUrl?.includes('vimeo.com')
+            
+            if (isVertical) {
+              // Vertical video: Description on left, video on right
+              return (
+                <div className="grid md:grid-cols-2 gap-6 rounded-2xl bg-white/80 backdrop-blur-sm p-8 border border-border/50 floating">
+                  <div className="flex flex-col justify-center">
+                    <h3 className="text-2xl font-serif font-medium mb-4 gradient-text">
+                      {showreel.title || 'Showreel'}
+                    </h3>
+                    {showreel.description && (
+                      <p className="text-muted-foreground leading-relaxed">
+                        {showreel.description}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex items-center justify-center">
+                    {showreel.videoUrl && (
+                      <VideoEmbed
+                        url={showreel.videoUrl}
+                        title={showreel.title || 'Showreel'}
+                        className="shadow-lg"
+                      />
+                    )}
+                  </div>
+                </div>
+              )
+            } else {
+              // Horizontal video: Video on top, description below
+              return (
+                <div className="rounded-2xl bg-white/80 backdrop-blur-sm p-8 border border-border/50 floating">
+                  <div className="mb-6">
+                    <h3 className="text-2xl font-serif font-medium mb-4 gradient-text">
+                      {showreel.title || 'Showreel'}
+                    </h3>
+                    {showreel.description && (
+                      <p className="text-muted-foreground leading-relaxed mb-6">
+                        {showreel.description}
+                      </p>
+                    )}
+                  </div>
+                  <div className="overflow-hidden rounded-lg bg-muted">
+                    {showreel.videoUrl && (
+                      <VideoEmbed
+                        url={showreel.videoUrl}
+                        title={showreel.title || 'Showreel'}
+                      />
+                    )}
+                  </div>
+                </div>
+              )
+            }
+          })()}
         </motion.div>
       )}
 

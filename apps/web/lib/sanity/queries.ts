@@ -2,8 +2,17 @@ import { sanityClient, imageUrlBuilder } from '../sanity'
 
 // Helper to get image URL
 export const urlFor = (source: any) => {
-  if (!source) return null
-  return imageUrlBuilder.image(source).url()
+  if (!source || !imageUrlBuilder) return null
+  // Check if source has a valid asset reference
+  if (source.asset && (!source.asset._ref || source.asset._ref === '')) {
+    return null
+  }
+  try {
+    return imageUrlBuilder.image(source).url()
+  } catch (error) {
+    console.warn('Error generating image URL:', error)
+    return null
+  }
 }
 
 // Music Queries
@@ -120,8 +129,13 @@ export const socialQueries = {
     handle,
     url,
     followers,
-    achievements,
+    achievements[] {
+      _key,
+      _type,
+      value
+    },
     recentPosts[] {
+      _key,
       image,
       caption,
       url
@@ -134,8 +148,13 @@ export const socialQueries = {
     handle,
     url,
     followers,
-    achievements,
+    achievements[] {
+      _key,
+      _type,
+      value
+    },
     recentPosts[] {
+      _key,
       image,
       caption,
       url
@@ -149,43 +168,92 @@ export const globalQueries = {
     _id,
     siteName,
     bio,
+    backgroundVideo {
+      videoUrl,
+      posterImage {
+        asset -> {
+          _id,
+          _type,
+          url
+        }
+      },
+      opacity
+    },
+    backgroundImages[] {
+      _type,
+      _key,
+      image {
+        asset -> {
+          _id,
+          _type,
+          url
+        }
+      },
+      layer,
+      position,
+      opacity,
+      size
+    },
     socialLinks[] {
+      _key,
       platform,
       url
     }
   }`,
 }
 
+// Brand Queries
+export const brandQueries = {
+  getAll: `*[_type == "brand"] | order(order asc, _createdAt asc) {
+    _id,
+    name,
+    logo,
+    url,
+    order
+  }`,
+}
+
 // Query execution functions
 export async function fetchMusic() {
+  if (!sanityClient) {
+    console.warn('Sanity client not initialized')
+    return []
+  }
   return await sanityClient.fetch(musicQueries.getAll)
 }
 
 export async function fetchMusicById(id: string) {
+  if (!sanityClient) return null
   return await sanityClient.fetch(musicQueries.getById, { id })
 }
 
 export async function fetchFood() {
+  if (!sanityClient) return []
   return await sanityClient.fetch(foodQueries.getAll)
 }
 
 export async function fetchFoodById(id: string) {
+  if (!sanityClient) return null
   return await sanityClient.fetch(foodQueries.getById, { id })
 }
 
 export async function fetchFoodByEventType(eventType: string) {
+  if (!sanityClient) return []
   return await sanityClient.fetch(foodQueries.getByEventType, { eventType })
 }
 
 export async function fetchHost() {
+  if (!sanityClient) return []
   return await sanityClient.fetch(hostQueries.getAll)
 }
 
 export async function fetchHostById(id: string) {
+  if (!sanityClient) return null
   return await sanityClient.fetch(hostQueries.getById, { id })
 }
 
 export async function fetchShowreel() {
+  if (!sanityClient) return null
   // First try to get the marked showreel
   const showreel = await sanityClient.fetch(hostQueries.getShowreel)
   
@@ -209,14 +277,22 @@ export async function fetchShowreel() {
 }
 
 export async function fetchSocial() {
+  if (!sanityClient) return []
   return await sanityClient.fetch(socialQueries.getAll)
 }
 
 export async function fetchSocialByPlatform(platform: string) {
+  if (!sanityClient) return null
   return await sanityClient.fetch(socialQueries.getByPlatform, { platform })
 }
 
 export async function fetchGlobalSettings() {
+  if (!sanityClient) return null
   return await sanityClient.fetch(globalQueries.getSettings)
+}
+
+export async function fetchBrands() {
+  if (!sanityClient) return []
+  return await sanityClient.fetch(brandQueries.getAll)
 }
 

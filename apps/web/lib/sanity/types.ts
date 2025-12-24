@@ -59,13 +59,19 @@ export interface SocialPost {
   url?: string
 }
 
+export interface Achievement {
+  _key: string
+  _type: string
+  value: string
+}
+
 export interface Social {
   _id: string
   platform: string
   handle?: string
   url?: string
   followers?: number
-  achievements?: string[]
+  achievements?: Achievement[]
   recentPosts?: SocialPost[]
 }
 
@@ -75,11 +81,37 @@ export interface SocialLink {
   url: string
 }
 
+export interface BackgroundImage {
+  _type?: string
+  image: SanityImage
+  layer: 'background' | 'foreground'
+  position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'center'
+  opacity?: number
+  size?: 'small' | 'medium' | 'large'
+}
+
+export interface BackgroundVideo {
+  videoUrl: string
+  posterImage?: SanityImage
+  opacity?: number
+}
+
 export interface GlobalSettings {
   _id: string
   siteName?: string
   bio?: string
+  backgroundVideo?: BackgroundVideo
+  backgroundImages?: BackgroundImage[]
   socialLinks?: SocialLink[]
+}
+
+// Brand Types
+export interface Brand {
+  _id: string
+  name: string
+  logo: SanityImage
+  url?: string
+  order?: number
 }
 
 

@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Calendar, Quote, ExternalLink } from 'lucide-react'
+import { VideoEmbed } from '@/components/shared/VideoEmbed'
 import type { Host } from '@/lib/sanity/types'
 
 interface EventCardProps {
@@ -18,20 +19,23 @@ export function EventCard({ event, index }: EventCardProps) {
       whileHover={{ y: -8, scale: 1.01 }}
       className="group overflow-hidden rounded-2xl bg-white/80 backdrop-blur-sm p-8 border border-border/50 floating floating-hover transition-all duration-300"
     >
-      <div className="mb-4 flex items-start justify-between">
-        <div>
+      {/* Main Content: Description on left, Video on right */}
+      <div className="grid md:grid-cols-2 gap-6 mb-6">
+        {/* Left: Description and Details */}
+        <div className="flex flex-col">
           <motion.h3
             whileHover={{ x: 4 }}
-            className="text-2xl font-serif font-medium mb-2 gradient-text"
+            className="text-2xl font-serif font-medium mb-4 gradient-text"
           >
             {event.title}
           </motion.h3>
+          
           {event.eventDate && (
             <motion.div
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 + 0.2 }}
-              className="mt-2 flex items-center gap-2 text-sm text-muted-foreground"
+              className="mb-4 flex items-center gap-2 text-sm text-muted-foreground"
             >
               <motion.div
                 animate={{ rotate: [0, 10, -10, 0] }}
@@ -48,42 +52,45 @@ export function EventCard({ event, index }: EventCardProps) {
               </span>
             </motion.div>
           )}
+
+          {event.description && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: index * 0.1 + 0.1 }}
+              className="text-muted-foreground leading-relaxed"
+            >
+              {event.description}
+            </motion.p>
+          )}
         </div>
+
+        {/* Right: Video */}
+        {event.videoUrl && (
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: index * 0.1 + 0.2 }}
+            whileHover={{ scale: 1.02 }}
+            className="w-full"
+          >
+            <VideoEmbed
+              url={event.videoUrl}
+              title={event.title}
+              className="shadow-lg"
+            />
+          </motion.div>
+        )}
       </div>
 
-      {event.description && (
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: index * 0.1 + 0.1 }}
-          className="mb-4 text-muted-foreground"
-        >
-          {event.description}
-        </motion.p>
-      )}
-
-      {event.videoUrl && (
-        <motion.div
-          whileHover={{ scale: 1.02 }}
-          className="mb-4 aspect-video w-full overflow-hidden rounded-lg bg-muted shadow-lg"
-        >
-          <iframe
-            src={event.videoUrl.replace('watch?v=', 'embed/')}
-            title={event.title}
-            className="h-full w-full"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
-        </motion.div>
-      )}
-
+      {/* Testimonial underneath */}
       {event.testimonial && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.1 + 0.3 }}
           whileHover={{ scale: 1.02, backgroundColor: 'hsl(var(--primary) / 0.08)' }}
-          className="rounded-xl bg-primary/5 border border-primary/10 p-6 mt-4 transition-all duration-300"
+          className="rounded-xl bg-primary/5 border border-primary/10 p-6 transition-all duration-300"
         >
           <motion.div
             animate={{ rotate: [0, 5, -5, 0] }}

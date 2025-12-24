@@ -158,9 +158,9 @@ async function populateSanity() {
         title: 'Midnight Dreams',
         artist: 'Priscilla Dina Toko',
         streamingLinks: [
-          { platform: 'Spotify', url: 'https://open.spotify.com/track/example1' },
-          { platform: 'Apple Music', url: 'https://music.apple.com/track/example1' },
-          { platform: 'YouTube', url: 'https://youtube.com/watch?v=example1' },
+          { _key: 'spotify-1', platform: 'Spotify', url: 'https://open.spotify.com/track/example1' },
+          { _key: 'apple-1', platform: 'Apple Music', url: 'https://music.apple.com/track/example1' },
+          { _key: 'youtube-1', platform: 'YouTube', url: 'https://youtube.com/watch?v=example1' },
         ],
       },
       {
@@ -168,8 +168,8 @@ async function populateSanity() {
         title: 'City Lights',
         artist: 'Priscilla Dina Toko',
         streamingLinks: [
-          { platform: 'Spotify', url: 'https://open.spotify.com/track/example2' },
-          { platform: 'Apple Music', url: 'https://music.apple.com/track/example2' },
+          { _key: 'spotify-2', platform: 'Spotify', url: 'https://open.spotify.com/track/example2' },
+          { _key: 'apple-2', platform: 'Apple Music', url: 'https://music.apple.com/track/example2' },
         ],
       },
       {
@@ -177,8 +177,8 @@ async function populateSanity() {
         title: 'Soulful Journey',
         artist: 'Priscilla Dina Toko',
         streamingLinks: [
-          { platform: 'Spotify', url: 'https://open.spotify.com/track/example3' },
-          { platform: 'SoundCloud', url: 'https://soundcloud.com/priscilla/soulful-journey' },
+          { _key: 'spotify-3', platform: 'Spotify', url: 'https://open.spotify.com/track/example3' },
+          { _key: 'soundcloud-3', platform: 'SoundCloud', url: 'https://soundcloud.com/priscilla/soulful-journey' },
         ],
       },
     ]
@@ -191,11 +191,29 @@ async function populateSanity() {
       )
       
       if (existing) {
-        await client
-          .patch(existing._id)
-          .set(music)
-          .commit()
-        console.log(`   ✅ Updated: ${music.title}`)
+        // Only update fields that are missing, preserve existing data
+        const updateData: any = {}
+        
+        if (!existing.coverImage && music.coverImage) {
+          updateData.coverImage = music.coverImage
+        }
+        if (!existing.audioUrl && music.audioUrl) {
+          updateData.audioUrl = music.audioUrl
+        }
+        // Only update streamingLinks if they don't exist
+        if ((!existing.streamingLinks || existing.streamingLinks.length === 0) && music.streamingLinks) {
+          updateData.streamingLinks = music.streamingLinks
+        }
+        
+        if (Object.keys(updateData).length > 0) {
+          await client
+            .patch(existing._id)
+            .set(updateData)
+            .commit()
+          console.log(`   ✅ Updated: ${music.title} (preserved existing data)`)
+        } else {
+          console.log(`   ⏭️  Skipped: ${music.title} (already exists with all data)`)
+        }
       } else {
         const result = await client.create(music)
         console.log(`   ✅ Created: ${music.title}`)
@@ -204,6 +222,9 @@ async function populateSanity() {
 
     // Food entries
     console.log('\n🍽️ Creating Food Portfolio entries...')
+    console.log('   ⚠️  Note: Images need to be added manually in Sanity Studio')
+    console.log('   💡 Go to Food Portfolio entries and add images/videos to the "Images & Videos" field\n')
+    
     const foodEntries = [
       {
         _type: 'food',
@@ -211,6 +232,7 @@ async function populateSanity() {
         description: 'A beautiful spread for a 200-guest wedding featuring modern fusion cuisine with African and European influences.',
         eventType: 'Wedding',
         date: '2024-11-15',
+        // Images should be added manually in Sanity Studio
       },
       {
         _type: 'food',
@@ -218,6 +240,7 @@ async function populateSanity() {
         description: 'Sophisticated canapés and plated dinner service for a tech company launch event.',
         eventType: 'Corporate',
         date: '2024-10-20',
+        // Images should be added manually in Sanity Studio
       },
       {
         _type: 'food',
@@ -225,6 +248,7 @@ async function populateSanity() {
         description: 'Intimate 8-course tasting menu for a private dinner party, showcasing seasonal ingredients.',
         eventType: 'Private',
         date: '2024-12-05',
+        // Images should be added manually in Sanity Studio
       },
       {
         _type: 'food',
@@ -232,6 +256,7 @@ async function populateSanity() {
         description: 'Multi-course fine dining experience for 150 guests at an annual charity fundraising event.',
         eventType: 'Charity',
         date: '2024-09-30',
+        // Images should be added manually in Sanity Studio
       },
     ]
 
@@ -243,11 +268,29 @@ async function populateSanity() {
       )
       
       if (existing) {
-        await client
-          .patch(existing._id)
-          .set(food)
-          .commit()
-        console.log(`   ✅ Updated: ${food.title}`)
+        // Only update fields that are missing, preserve existing media and user-edited data
+        const updateData: any = {}
+        
+        if (!existing.description && food.description) {
+          updateData.description = food.description
+        }
+        if (!existing.date && food.date) {
+          updateData.date = food.date
+        }
+        // Only update media if it doesn't exist
+        if ((!existing.media || existing.media.length === 0) && food.media) {
+          updateData.media = food.media
+        }
+        
+        if (Object.keys(updateData).length > 0) {
+          await client
+            .patch(existing._id)
+            .set(updateData)
+            .commit()
+          console.log(`   ✅ Updated: ${food.title} (preserved existing data)`)
+        } else {
+          console.log(`   ⏭️  Skipped: ${food.title} (already exists with all data)`)
+        }
       } else {
         const result = await client.create(food)
         console.log(`   ✅ Created: ${food.title}`)
@@ -291,11 +334,33 @@ async function populateSanity() {
       )
       
       if (existing) {
-        await client
-          .patch(existing._id)
-          .set(host)
-          .commit()
-        console.log(`   ✅ Updated: ${host.title}`)
+        // Only update fields that are missing, preserve existing videoUrl and other user-edited fields
+        const updateData: any = {}
+        
+        // Only set fields that are missing or empty in existing entry
+        if (!existing.description && host.description) {
+          updateData.description = host.description
+        }
+        if (!existing.videoUrl && host.videoUrl) {
+          updateData.videoUrl = host.videoUrl
+        }
+        if (!existing.testimonial && host.testimonial) {
+          updateData.testimonial = host.testimonial
+        }
+        if (!existing.isShowreel && host.isShowreel !== undefined) {
+          updateData.isShowreel = host.isShowreel
+        }
+        
+        // Only update if there are fields to update
+        if (Object.keys(updateData).length > 0) {
+          await client
+            .patch(existing._id)
+            .set(updateData)
+            .commit()
+          console.log(`   ✅ Updated: ${host.title} (preserved existing data)`)
+        } else {
+          console.log(`   ⏭️  Skipped: ${host.title} (already exists with all data)`)
+        }
       } else {
         const result = await client.create(host)
         console.log(`   ✅ Created: ${host.title}`)
@@ -323,30 +388,35 @@ async function populateSanity() {
         url: 'https://instagram.com/priscilladinatoko',
         followers: instagramFollowers || 0,
         achievements: [
-          '100K+ followers milestone',
-          'Featured in Instagram\'s "Creators to Watch"',
-          'Top Food & Lifestyle Content Creator',
-          'Verified Creator Account',
-          'Collaborated with major brands',
+          { _key: 'achievement-1', _type: 'string', value: '100K+ followers milestone' },
+          { _key: 'achievement-2', _type: 'string', value: 'Featured in Instagram\'s "Creators to Watch"' },
+          { _key: 'achievement-3', _type: 'string', value: 'Top Food & Lifestyle Content Creator' },
+          { _key: 'achievement-4', _type: 'string', value: 'Verified Creator Account' },
+          { _key: 'achievement-5', _type: 'string', value: 'Collaborated with major brands' },
         ],
         recentPosts: [
           {
+            _key: 'post-1',
             caption: 'Behind the scenes at today\'s cooking shoot! 🎬✨ Can\'t wait to share this new recipe with you all. What dish should I make next? 👨‍🍳',
             url: 'https://instagram.com/p/recent1',
           },
           {
+            _key: 'post-2',
             caption: 'New music project coming soon! 🎵 Working on something special that combines my love for food, music, and storytelling. Stay tuned! ✨',
             url: 'https://instagram.com/p/recent2',
           },
           {
+            _key: 'post-3',
             caption: 'Hosted an amazing event last night! The energy was incredible. Grateful for every opportunity to connect with amazing people. 🙏✨',
             url: 'https://instagram.com/p/recent3',
           },
           {
+            _key: 'post-4',
             caption: 'Quick cooking tip that changed everything! 🔥 Sometimes the simplest techniques make the biggest difference. Try this at home!',
             url: 'https://instagram.com/p/recent4',
           },
           {
+            _key: 'post-5',
             caption: 'From the kitchen to the stage - this is my journey. Food, music, hosting, and everything in between. What inspires you? 💫',
             url: 'https://instagram.com/p/recent5',
           },
@@ -359,30 +429,35 @@ async function populateSanity() {
         url: 'https://tiktok.com/@priscilladinatoko',
         followers: tiktokFollowers || 0,
         achievements: [
-          '100K+ followers milestone',
-          'Viral video: 2M+ views',
-          'Featured on TikTok\'s Discover page',
-          'Top Food & Culture Creator',
-          'Trending multiple times',
+          { _key: 'achievement-1', _type: 'string', value: '100K+ followers milestone' },
+          { _key: 'achievement-2', _type: 'string', value: 'Viral video: 2M+ views' },
+          { _key: 'achievement-3', _type: 'string', value: 'Featured on TikTok\'s Discover page' },
+          { _key: 'achievement-4', _type: 'string', value: 'Top Food & Culture Creator' },
+          { _key: 'achievement-5', _type: 'string', value: 'Trending multiple times' },
         ],
         recentPosts: [
           {
+            _key: 'post-1',
             caption: 'Quick cooking tip that changed everything! 🔥 #cookingtips #chef #foodtok',
             url: 'https://tiktok.com/@priscilladinatoko/video/recent1',
           },
           {
+            _key: 'post-2',
             caption: 'POV: You\'re a multi-talented creator trying to explain what you do 😅 #multitalented #creator #food #music #host',
             url: 'https://tiktok.com/@priscilladinatoko/video/recent2',
           },
           {
+            _key: 'post-3',
             caption: 'Behind the scenes of hosting an event! The prep work is REAL 🎤✨ #hosting #events #behindthescenes',
             url: 'https://tiktok.com/@priscilladinatoko/video/recent3',
           },
           {
+            _key: 'post-4',
             caption: 'New recipe alert! This one is going to blow your mind 🍽️✨ #recipe #cooking #foodie',
             url: 'https://tiktok.com/@priscilladinatoko/video/recent4',
           },
           {
+            _key: 'post-5',
             caption: 'When someone asks what I do for a living... 😂 #multihyphenate #creator #food #music',
             url: 'https://tiktok.com/@priscilladinatoko/video/recent5',
           },
@@ -398,19 +473,46 @@ async function populateSanity() {
       )
       
       if (existing) {
-        // Update existing entry, preserving follower count if it was manually set
-        const updateData = {
-          ...social,
-          followers: existing.followers || social.followers || 0, // Keep existing follower count if set
+        // Only update fields that are missing, preserve existing data
+        const updateData: any = {}
+        
+        // Preserve existing follower count if it exists
+        if (existing.followers && existing.followers > 0) {
+          updateData.followers = existing.followers
+        } else if (social.followers && social.followers > 0) {
+          updateData.followers = social.followers
         }
-        await client
-          .patch(existing._id)
-          .set(updateData)
-          .commit()
-        const followerText = updateData.followers > 0 
-          ? ` (${updateData.followers.toLocaleString()} followers)`
-          : ' (count unavailable - update manually)'
-        console.log(`   ✅ Updated: ${social.platform}${followerText}`)
+        
+        // Only update handle/url if missing
+        if (!existing.handle && social.handle) {
+          updateData.handle = social.handle
+        }
+        if (!existing.url && social.url) {
+          updateData.url = social.url
+        }
+        
+        // Only update achievements if they don't exist
+        if ((!existing.achievements || existing.achievements.length === 0) && social.achievements) {
+          updateData.achievements = social.achievements
+        }
+        
+        // Only update recentPosts if they don't exist
+        if ((!existing.recentPosts || existing.recentPosts.length === 0) && social.recentPosts) {
+          updateData.recentPosts = social.recentPosts
+        }
+        
+        if (Object.keys(updateData).length > 0) {
+          await client
+            .patch(existing._id)
+            .set(updateData)
+            .commit()
+          const followerText = updateData.followers > 0 
+            ? ` (${updateData.followers.toLocaleString()} followers)`
+            : ''
+          console.log(`   ✅ Updated: ${social.platform}${followerText} (preserved existing data)`)
+        } else {
+          console.log(`   ⏭️  Skipped: ${social.platform} (already exists with all data)`)
+        }
       } else {
         // Create new entry
         const result = await client.create(social)
@@ -427,8 +529,8 @@ async function populateSanity() {
       _type: 'global',
       siteName: 'Priscilla Dina Toko',
       socialLinks: [
-        { platform: 'Instagram', url: 'https://instagram.com/priscilladinatoko' },
-        { platform: 'TikTok', url: 'https://tiktok.com/@priscilladinatoko' },
+        { _key: 'instagram', platform: 'Instagram', url: 'https://instagram.com/priscilladinatoko' },
+        { _key: 'tiktok', platform: 'TikTok', url: 'https://tiktok.com/@priscilladinatoko' },
       ],
     }
 

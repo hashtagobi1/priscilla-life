@@ -10,7 +10,10 @@
     "studio": "pnpm --filter studio dev",
     "type-check": "pnpm -r type-check",
     "populate": "pnpm --filter populate-sanity populate",
-    "cleanup": "pnpm --filter populate-sanity cleanup"
+    "populate-with-images": "pnpm --filter populate-sanity populate-with-images",
+    "cleanup": "pnpm --filter populate-sanity cleanup",
+    "upload-images": "pnpm --filter populate-sanity upload-images",
+    "fix-keys": "pnpm --filter populate-sanity fix-keys"
   }
 }
 

@@ -12,8 +12,9 @@ import {
   fetchSocial,
   fetchSocialByPlatform,
   fetchGlobalSettings,
+  fetchBrands,
 } from './queries'
-import type { Music, Food, Host, Social, GlobalSettings } from './types'
+import type { Music, Food, Host, Social, GlobalSettings, Brand } from './types'
 
 // Music Hooks
 export function useMusic() {
@@ -91,6 +92,14 @@ export function useGlobalSettings() {
   return useQuery<GlobalSettings>({
     queryKey: ['globalSettings'],
     queryFn: fetchGlobalSettings,
+  })
+}
+
+// Brand Hooks
+export function useBrands() {
+  return useQuery<Brand[]>({
+    queryKey: ['brands'],
+    queryFn: fetchBrands,
   })
 }
 

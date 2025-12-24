@@ -1,10 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronLeft, ChevronRight, Play } from 'lucide-react'
 import Image from 'next/image'
 import { urlFor } from '@/lib/sanity/queries'
+import { VideoEmbed } from '@/components/shared/VideoEmbed'
 import type { FoodMedia } from '@/lib/sanity/types'
 
 interface MediaLightboxProps {
@@ -32,11 +33,16 @@ export function MediaLightbox({ media, initialIndex = 0, onClose }: MediaLightbo
     }
   }
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Escape') onClose()
-    if (e.key === 'ArrowLeft' && hasPrev) goToPrev()
-    if (e.key === 'ArrowRight' && hasNext) goToNext()
-  }
+  // Add keyboard listener
+  useEffect(() => {
+    const handleKeyDownGlobal = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+      if (e.key === 'ArrowLeft' && hasPrev) goToPrev()
+      if (e.key === 'ArrowRight' && hasNext) goToNext()
+    }
+    window.addEventListener('keydown', handleKeyDownGlobal)
+    return () => window.removeEventListener('keydown', handleKeyDownGlobal)
+  }, [hasPrev, hasNext, onClose, goToPrev, goToNext])
 
   const imageUrl = currentMedia?.type === 'image' && currentMedia.image
     ? urlFor(currentMedia.image)
@@ -48,9 +54,7 @@ export function MediaLightbox({ media, initialIndex = 0, onClose }: MediaLightbo
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
-        onKeyDown={handleKeyDown}
-        tabIndex={-1}
+        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm"
         onClick={onClose}
       >
         {/* Close Button */}
@@ -109,17 +113,15 @@ export function MediaLightbox({ media, initialIndex = 0, onClose }: MediaLightbo
             </div>
           )}
 
-          {currentMedia?.type === 'video' && currentMedia.videoUrl && (
-            <div className="relative w-full aspect-video max-w-5xl">
-              <iframe
-                src={currentMedia.videoUrl.replace('watch?v=', 'embed/')}
-                title={currentMedia.caption || 'Food portfolio video'}
-                className="w-full h-full rounded-lg"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-          )}
+                {currentMedia?.type === 'video' && currentMedia.videoUrl && (
+                  <div className="relative w-full aspect-video max-w-5xl">
+                    <VideoEmbed
+                      url={currentMedia.videoUrl}
+                      title={currentMedia.caption || 'Food portfolio video'}
+                      className="rounded-lg"
+                    />
+                  </div>
+                )}
 
           {/* Caption */}
           {currentMedia?.caption && (
@@ -138,7 +140,7 @@ export function MediaLightbox({ media, initialIndex = 0, onClose }: MediaLightbo
         {media.length > 1 && (
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 max-w-4xl overflow-x-auto px-4 pb-2">
             {media.map((item, index) => {
-              const thumbUrl = item.type === 'image' && item.image ? urlFor(item.image) : null
+              const thumbUrl = item.type === 'image' && item.image && item.image.asset?._ref ? urlFor(item.image) : null
               return (
                 <button
                   key={index}

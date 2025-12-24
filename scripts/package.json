@@ -4,7 +4,10 @@
   "type": "module",
   "scripts": {
     "populate": "node populate-sanity.js",
-    "cleanup": "node cleanup-duplicates.js"
+    "populate-with-images": "node populate-with-images.js",
+    "cleanup": "node cleanup-duplicates.js",
+    "upload-images": "node upload-images.js",
+    "fix-keys": "node fix-missing-keys.js"
   },
   "dependencies": {
     "@sanity/client": "^6.13.3",
