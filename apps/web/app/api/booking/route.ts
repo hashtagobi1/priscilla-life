@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
         <p><strong>Message:</strong></p>
         <p>${sanitized.message}</p>
       `,
-      replyTo: validated.email, // Use original email for reply-to (not sanitized)
+      reply_to: validated.email, // Use original email for reply-to (not sanitized)
     })
 
     if (error) {
