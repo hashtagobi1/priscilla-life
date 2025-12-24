@@ -14,7 +14,7 @@ export function BrandsBanner() {
   const duplicatedBrands = [...brands, ...brands]
 
   return (
-    <div className="relative w-full overflow-hidden py-12 bg-muted/30 border-y border-border/30">
+    <div className="relative w-full overflow-hidden py-12 bg-muted border-y border-border/30">
       <div className="container mx-auto px-6 mb-6">
         <h2 className="text-2xl md:text-3xl font-serif font-medium text-center text-foreground mb-2">
           Brands Worked With

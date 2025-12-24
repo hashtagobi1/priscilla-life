@@ -19,7 +19,7 @@ export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60 border-b border-border/50">
+    <nav className="sticky top-0 z-50 bg-background border-b border-border/50">
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-20">
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -97,7 +97,7 @@ export function Navigation() {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className="md:hidden py-6 space-y-2 overflow-hidden"
+              className="md:hidden py-6 space-y-2 overflow-hidden bg-background"
             >
               {navItems.map((item, index) => (
                 <motion.div

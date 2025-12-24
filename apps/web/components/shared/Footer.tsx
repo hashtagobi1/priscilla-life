@@ -28,7 +28,7 @@ export function Footer() {
   const footerSocials = settings?.socialLinks || []
 
   return (
-    <footer className="border-t border-border/50 mt-auto py-12">
+    <footer className="border-t border-border/50 mt-auto py-12 bg-background">
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center md:items-start gap-2">
