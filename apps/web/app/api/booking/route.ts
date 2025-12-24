@@ -4,7 +4,14 @@ import { z } from 'zod'
 import { rateLimit } from '@/lib/rate-limit'
 import { escapeHtml } from '@/lib/sanitize'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Lazy initialization to avoid build-time errors
+const getResend = () => {
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey) {
+    throw new Error('RESEND_API_KEY is not set')
+  }
+  return new Resend(apiKey)
+}
 
 // Validation schema
 const bookingSchema = z.object({
@@ -74,6 +81,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Send email via Resend
+    const resend = getResend()
     const { data, error } = await resend.emails.send({
       from: 'Priscilla Life <noreply@priscilla.life>',
       to: process.env.CONTACT_EMAIL,

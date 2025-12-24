@@ -23,6 +23,7 @@ export function Navigation() {
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-20">
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            {/* @ts-ignore - React 19 type compatibility */}
             <Link href="/" className="text-2xl font-serif font-medium text-foreground hover:text-primary transition-colors">
               Priscilla
             </Link>
@@ -31,6 +32,7 @@ export function Navigation() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-2">
             {navItems.map((item) => (
+              // @ts-ignore - React 19 type compatibility
               <Link
                 key={item.href}
                 href={item.href}
@@ -104,6 +106,7 @@ export function Navigation() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
                 >
+                  {/* @ts-ignore - React 19 type compatibility */}
                   <Link
                     href={item.href}
                     onClick={() => setMobileMenuOpen(false)}
