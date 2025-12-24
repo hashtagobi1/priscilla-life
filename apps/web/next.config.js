@@ -6,6 +6,8 @@ const nextConfig = {
       'framer-motion',
     ],
   },
+  // Use webpack instead of Turbopack (for @sanity/client compatibility)
+  turbopack: {},
   images: {
     remotePatterns: [
       {
