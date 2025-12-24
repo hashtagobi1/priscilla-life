@@ -54,7 +54,7 @@ export function FloatingBackground() {
 
         return (
           <motion.div
-            key={bgImage._key || `bg-${index}`}
+            key={(bgImage as any)._key || `bg-${index}`}
             className={`absolute ${getPositionClass(bgImage.position)} ${getSizeClass(bgImage.size)}`}
             style={{ zIndex }}
             initial={{ opacity: 0, scale: 0.8 }}
@@ -72,6 +72,7 @@ export function FloatingBackground() {
             }}
           >
             <div className="relative w-full h-full">
+              {/* @ts-ignore - React 19 type compatibility */}
               <Image
                 src={imageUrl}
                 alt="Background decoration"

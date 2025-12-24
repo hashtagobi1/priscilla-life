@@ -11,7 +11,7 @@ export function QueryProvider({ children }: { children: ReactNode }) {
         defaultOptions: {
           queries: {
             staleTime: 5 * 60 * 1000, // 5 minutes (content rarely changes)
-            cacheTime: 10 * 60 * 1000, // 10 minutes
+            gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime in v4)
             refetchOnWindowFocus: false,
             refetchOnMount: false, // Don't refetch if data exists
           },
@@ -20,6 +20,7 @@ export function QueryProvider({ children }: { children: ReactNode }) {
   )
 
   return (
+    // @ts-ignore - React 19 type compatibility
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   )
 }

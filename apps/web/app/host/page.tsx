@@ -20,6 +20,7 @@ export default function HostPage() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-4 flex justify-center"
         >
+          {/* @ts-ignore - React 19 type compatibility */}
           <Mic className="h-12 w-12 text-primary" />
         </motion.div>
         <h1 className="mb-6 text-6xl font-serif font-medium md:text-7xl">
@@ -39,6 +40,7 @@ export default function HostPage() {
           className="mb-16"
         >
           <div className="mb-6 flex items-center gap-2">
+            {/* @ts-ignore - React 19 type compatibility */}
             <Video className="h-6 w-6 text-primary" />
             <h2 className="text-3xl font-semibold">Showreel</h2>
           </div>
@@ -104,6 +106,7 @@ export default function HostPage() {
 
       {/* Events Grid */}
       <div className="mb-6 flex items-center gap-2">
+        {/* @ts-ignore - React 19 type compatibility */}
         <Calendar className="h-6 w-6 text-primary" />
         <h2 className="text-3xl font-semibold">Past Events</h2>
       </div>
@@ -123,6 +126,7 @@ export default function HostPage() {
       ) : (
         !eventsLoading && (
           <div className="py-20 text-center text-muted-foreground">
+            {/* @ts-ignore - React 19 type compatibility */}
             <Mic className="mx-auto mb-4 h-16 w-16 opacity-50" />
             <p className="text-lg">No events available yet.</p>
           </div>
@@ -137,6 +141,7 @@ export default function HostPage() {
         className="mt-20"
       >
         <div className="mb-8 text-center">
+          {/* @ts-ignore - React 19 type compatibility */}
           <Star className="mx-auto mb-6 h-12 w-12 text-primary" />
           <h2 className="mb-3 text-3xl font-serif font-medium">Book Priscilla</h2>
           <p className="text-muted-foreground font-light">

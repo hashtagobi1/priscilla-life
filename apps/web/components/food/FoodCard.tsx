@@ -46,6 +46,7 @@ export function FoodCard({ food, index }: FoodCardProps) {
             transition={{ duration: 0.5, ease: "easeOut" }}
             className="relative h-64 w-full overflow-hidden"
           >
+            {/* @ts-ignore - React 19 type compatibility */}
             <Image
               src={firstImageUrl}
               alt={food.title || 'Food portfolio'}
@@ -60,6 +61,7 @@ export function FoodCard({ food, index }: FoodCardProps) {
               <div className="text-white text-center">
                 {food.media && food.media.length > 1 && (
                   <div className="flex items-center gap-2">
+                    {/* @ts-ignore - React 19 type compatibility */}
                     <ImageIcon className="h-5 w-5" />
                     <span className="text-sm font-medium">
                       View {food.media.length} {food.media.length === 1 ? 'item' : 'items'}
@@ -68,6 +70,7 @@ export function FoodCard({ food, index }: FoodCardProps) {
                 )}
                 {firstMedia?.type === 'video' && (
                   <div className="flex items-center gap-2">
+                    {/* @ts-ignore - React 19 type compatibility */}
                     <Play className="h-5 w-5" />
                     <span className="text-sm font-medium">Play Video</span>
                   </div>
@@ -79,6 +82,7 @@ export function FoodCard({ food, index }: FoodCardProps) {
 
         {firstMedia?.type === 'video' && !firstImageUrl && (
           <div className="relative h-64 w-full bg-muted flex items-center justify-center">
+            {/* @ts-ignore - React 19 type compatibility */}
             <Play className="h-12 w-12 text-primary" />
           </div>
         )}
@@ -94,7 +98,8 @@ export function FoodCard({ food, index }: FoodCardProps) {
                   animate={{ rotate: [0, 15, -15, 0] }}
                   transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
                 >
-                  <UtensilsCrossed className="h-3 w-3" />
+                      {/* @ts-ignore - React 19 type compatibility */}
+                      <UtensilsCrossed className="h-3 w-3" />
                 </motion.div>
                 {food.eventType}
               </motion.span>
@@ -106,6 +111,7 @@ export function FoodCard({ food, index }: FoodCardProps) {
                 transition={{ delay: index * 0.1 + 0.1 }}
                 className="flex items-center gap-1 text-xs text-muted-foreground"
               >
+                {/* @ts-ignore - React 19 type compatibility */}
                 <Calendar className="h-3 w-3" />
                 {new Date(food.date).toLocaleDateString('en-US', {
                   year: 'numeric',

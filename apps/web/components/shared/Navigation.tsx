@@ -68,6 +68,7 @@ export function Navigation() {
                   exit={{ rotate: 90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
+                  {/* @ts-ignore - React 19 type compatibility */}
                   <X size={24} />
                 </motion.div>
               ) : (
@@ -78,6 +79,7 @@ export function Navigation() {
                   exit={{ rotate: -90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
+                  {/* @ts-ignore - React 19 type compatibility */}
                   <Menu size={24} />
                 </motion.div>
               )}

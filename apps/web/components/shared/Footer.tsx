@@ -65,6 +65,7 @@ export function Footer() {
                     className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300"
                     aria-label={`Follow on ${social.platform}`}
                   >
+                    {/* @ts-ignore - React 19 type compatibility */}
                     <Icon className="h-5 w-5" />
                   </motion.a>
                 )

@@ -3,7 +3,7 @@
 import { useFood } from '@/lib/sanity/hooks'
 import { FoodCard } from '@/components/food/FoodCard'
 import { BookingForm } from '@/components/forms/BookingForm'
-import { UtensilsCrossed, ChefHat, Calendar } from 'lucide-react'
+import { UtensilsCrossed, Calendar } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 export default function FoodPage() {
@@ -18,7 +18,8 @@ export default function FoodPage() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-4 flex justify-center"
         >
-          <ChefHat className="h-12 w-12 text-primary" />
+          {/* @ts-ignore - React 19 type compatibility */}
+          <UtensilsCrossed className="h-12 w-12 text-primary" />
         </motion.div>
         <h1 className="mb-6 text-6xl font-serif font-medium md:text-7xl">
           Food & Catering
@@ -53,6 +54,7 @@ export default function FoodPage() {
       ) : (
         !isLoading && (
           <div className="py-20 text-center text-muted-foreground">
+            {/* @ts-ignore - React 19 type compatibility */}
             <UtensilsCrossed className="mx-auto mb-4 h-16 w-16 opacity-50" />
             <p className="text-lg">No food portfolio available yet.</p>
           </div>
@@ -67,6 +69,7 @@ export default function FoodPage() {
         className="mt-20"
       >
         <div className="mb-8 text-center">
+          {/* @ts-ignore - React 19 type compatibility */}
           <Calendar className="mx-auto mb-6 h-12 w-12 text-primary" />
           <h2 className="mb-3 text-3xl font-serif font-medium">Catering Inquiry</h2>
           <p className="text-muted-foreground font-light">

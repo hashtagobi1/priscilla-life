@@ -227,6 +227,7 @@ export function BookingForm() {
               animate={{ rotate: 360 }}
               transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
             >
+              {/* @ts-ignore - React 19 type compatibility */}
               <Loader2 className="h-4 w-4" />
             </motion.div>
             Sending...
@@ -237,6 +238,7 @@ export function BookingForm() {
               animate={{ x: [0, 3, 0] }}
               transition={{ duration: 1.5, repeat: Infinity }}
             >
+              {/* @ts-ignore - React 19 type compatibility */}
               <Send className="h-4 w-4" />
             </motion.span>
             Send Inquiry

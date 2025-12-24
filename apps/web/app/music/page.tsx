@@ -17,6 +17,7 @@ export default function MusicPage() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-4 flex justify-center"
         >
+          {/* @ts-ignore - React 19 type compatibility */}
           <Music className="h-12 w-12 text-primary" />
         </motion.div>
         <h1 className="mb-6 text-6xl font-serif font-medium md:text-7xl">Music</h1>
@@ -50,6 +51,7 @@ export default function MusicPage() {
       ) : (
         !isLoading && (
           <div className="py-20 text-center text-muted-foreground">
+            {/* @ts-ignore - React 19 type compatibility */}
             <Headphones className="mx-auto mb-4 h-16 w-16 opacity-50" />
             <p className="text-lg">No music available yet.</p>
             <p className="text-sm">Check back soon for new releases!</p>
@@ -59,6 +61,7 @@ export default function MusicPage() {
 
       {/* Streaming Platforms Section */}
       <div className="mt-20 rounded-2xl bg-white/60 backdrop-blur-sm border border-border/50 p-12 text-center floating">
+        {/* @ts-ignore - React 19 type compatibility */}
         <Radio className="mx-auto mb-6 h-12 w-12 text-primary" />
         <h2 className="mb-4 text-3xl font-serif font-medium">Stream Everywhere</h2>
         <p className="mb-8 text-muted-foreground font-light">

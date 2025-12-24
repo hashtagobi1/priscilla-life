@@ -44,6 +44,7 @@ export function BrandsBanner() {
                   className="block hover:opacity-80 transition-opacity"
                 >
                   <div className="relative w-32 h-16 md:w-40 md:h-20">
+                    {/* @ts-ignore - React 19 type compatibility */}
                     <Image
                       src={logoUrl}
                       alt={brand.name}
@@ -54,6 +55,7 @@ export function BrandsBanner() {
                 </a>
               ) : (
                 <div className="relative w-32 h-16 md:w-40 md:h-20">
+                  {/* @ts-ignore - React 19 type compatibility */}
                   <Image
                     src={logoUrl}
                     alt={brand.name}

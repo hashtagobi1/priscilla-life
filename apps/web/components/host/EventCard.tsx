@@ -41,6 +41,7 @@ export function EventCard({ event, index }: EventCardProps) {
                 animate={{ rotate: [0, 10, -10, 0] }}
                 transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
               >
+                {/* @ts-ignore - React 19 type compatibility */}
                 <Calendar className="h-4 w-4" />
               </motion.div>
               <span>
@@ -96,6 +97,7 @@ export function EventCard({ event, index }: EventCardProps) {
             animate={{ rotate: [0, 5, -5, 0] }}
             transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
           >
+            {/* @ts-ignore - React 19 type compatibility */}
             <Quote className="mb-3 h-5 w-5 text-primary" />
           </motion.div>
           <p className="italic text-foreground/70 font-light leading-relaxed">{event.testimonial}</p>

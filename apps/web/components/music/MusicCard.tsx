@@ -29,6 +29,7 @@ export function MusicCard({ music, index }: MusicCardProps) {
             transition={{ duration: 0.5, ease: "easeOut" }}
             className="relative h-full w-full"
           >
+            {/* @ts-ignore - React 19 type compatibility */}
             <Image
               src={imageUrl}
               alt={music.title || 'Album cover'}
@@ -48,6 +49,7 @@ export function MusicCard({ music, index }: MusicCardProps) {
                 whileTap={{ scale: 0.95 }}
                 className="rounded-full bg-primary p-4 text-primary-foreground shadow-lg btn-interactive"
               >
+                {/* @ts-ignore - React 19 type compatibility */}
                 <Play className="h-6 w-6 fill-current" />
               </motion.button>
             </motion.div>
@@ -81,6 +83,7 @@ export function MusicCard({ music, index }: MusicCardProps) {
                   animate={{ x: [0, 2, 0] }}
                   transition={{ duration: 1.5, repeat: Infinity, delay: idx * 0.2 }}
                 >
+                  {/* @ts-ignore - React 19 type compatibility */}
                   <ExternalLink className="h-3 w-3" />
                 </motion.span>
               </motion.a>
