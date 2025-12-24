@@ -23,6 +23,8 @@ echo ""
 cat > apps/web/.env.local << EOF
 NEXT_PUBLIC_SANITY_PROJECT_ID=$PROJECT_ID
 NEXT_PUBLIC_SANITY_DATASET=$DATASET
+RESEND_API_KEY=your_resend_api_key_here
+CONTACT_EMAIL=your_contact_email@example.com
 EOF
 
 # Create .env.local for Sanity Studio
@@ -36,6 +38,10 @@ echo ""
 echo "📁 Created:"
 echo "   - apps/web/.env.local"
 echo "   - apps/studio/.env.local"
+echo ""
+echo "⚠️  IMPORTANT: Update apps/web/.env.local with:"
+echo "   - RESEND_API_KEY (from your new Resend team)"
+echo "   - CONTACT_EMAIL (where booking inquiries should be sent)"
 echo ""
 echo "🚀 You can now run:"
 echo "   - pnpm dev (for Next.js)"

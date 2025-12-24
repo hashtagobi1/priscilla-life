@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "populate": "node populate-sanity.js"
+    "populate": "node populate-sanity.js",
+    "cleanup": "node cleanup-duplicates.js"
   },
   "dependencies": {
     "@sanity/client": "^6.13.3",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "node-fetch": "^3.3.2"
   }
 }
 

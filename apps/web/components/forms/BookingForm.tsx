@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Send, Loader2 } from 'lucide-react'
 
 interface BookingFormData {
@@ -11,6 +11,7 @@ interface BookingFormData {
   eventType: string
   eventDate: string
   guestCount: string
+  budget: string
   message: string
 }
 
@@ -22,6 +23,7 @@ export function BookingForm() {
     eventType: '',
     eventDate: '',
     guestCount: '',
+    budget: '',
     message: '',
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -49,6 +51,7 @@ export function BookingForm() {
           eventType: '',
           eventDate: '',
           guestCount: '',
+          budget: '',
           message: '',
         })
       } else {
@@ -157,6 +160,20 @@ export function BookingForm() {
             className="w-full rounded-xl border border-border/50 bg-background px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-light"
           />
         </div>
+
+        <div>
+          <label htmlFor="budget" className="mb-2 block text-sm font-medium">
+            Prospective Budget
+          </label>
+          <input
+            type="text"
+            id="budget"
+            value={formData.budget}
+            onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+            placeholder="e.g., $5,000 - $10,000"
+            className="w-full rounded-xl border border-border/50 bg-background px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-light"
+          />
+        </div>
       </div>
 
       <div>
@@ -173,35 +190,59 @@ export function BookingForm() {
         />
       </div>
 
-      {submitStatus === 'success' && (
-        <div className="rounded-lg bg-green-500/10 p-4 text-green-600">
-          Thank you! Your inquiry has been sent successfully.
-        </div>
-      )}
+      <AnimatePresence>
+        {submitStatus === 'success' && (
+          <motion.div
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            className="rounded-lg bg-green-500/10 p-4 text-green-600 border border-green-500/20"
+          >
+            Thank you! Your inquiry has been sent successfully.
+          </motion.div>
+        )}
 
-      {submitStatus === 'error' && (
-        <div className="rounded-lg bg-destructive/10 p-4 text-destructive">
-          Something went wrong. Please try again.
-        </div>
-      )}
+        {submitStatus === 'error' && (
+          <motion.div
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            className="rounded-lg bg-destructive/10 p-4 text-destructive border border-destructive/20"
+          >
+            Something went wrong. Please try again.
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      <button
+      <motion.button
         type="submit"
         disabled={isSubmitting}
-        className="flex w-full items-center justify-center gap-2 rounded-full bg-primary px-8 py-4 font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:scale-[1.02] disabled:opacity-50 disabled:hover:scale-100 floating"
+        whileHover={{ scale: 1.02, y: -2 }}
+        whileTap={{ scale: 0.98 }}
+        className="flex w-full items-center justify-center gap-2 rounded-full bg-primary px-8 py-4 font-medium text-primary-foreground transition-all hover:bg-primary/90 disabled:opacity-50 disabled:hover:scale-100 floating btn-interactive"
       >
         {isSubmitting ? (
           <>
-            <Loader2 className="h-4 w-4 animate-spin" />
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            >
+              <Loader2 className="h-4 w-4" />
+            </motion.div>
             Sending...
           </>
         ) : (
           <>
-            <Send className="h-4 w-4" />
+            <motion.span
+              animate={{ x: [0, 3, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              <Send className="h-4 w-4" />
+            </motion.span>
             Send Inquiry
           </>
         )}
-      </button>
+      </motion.button>
     </motion.form>
   )
 }

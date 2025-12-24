@@ -19,6 +19,13 @@ export default {
       type: 'url',
     },
     {
+      name: 'isShowreel',
+      title: 'Use as Showreel (Hero Video)',
+      type: 'boolean',
+      description: 'Check this to display this video as the main showreel on the host page',
+      initialValue: false,
+    },
+    {
       name: 'eventDate',
       title: 'Event Date',
       type: 'date',

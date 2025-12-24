@@ -1,14 +1,13 @@
 'use client'
 
 import { useSocial } from '@/lib/sanity/hooks'
-import { Instagram, Twitter, TrendingUp, Users, Award } from 'lucide-react'
+import { Instagram, TrendingUp, Users, Award } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { urlFor } from '@/lib/sanity/queries'
 
 const platformIcons: Record<string, any> = {
   Instagram: Instagram,
-  Twitter: Twitter,
   TikTok: TrendingUp,
 }
 
@@ -16,7 +15,7 @@ export default function SocialPage() {
   const { data: social, isLoading, error } = useSocial()
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="container mx-auto px-4 py-12" data-theme="social">
       {/* Header */}
       <div className="mb-12 text-center">
         <motion.div
@@ -68,8 +67,18 @@ export default function SocialPage() {
                       <h2 className="text-2xl font-serif font-medium">
                         {platform.platform}
                       </h2>
-                      {platform.followers && (
-                        <p className="text-muted-foreground">
+                      {platform.handle && (
+                        <a
+                          href={platform.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary hover:underline transition-colors"
+                        >
+                          {platform.handle}
+                        </a>
+                      )}
+                      {platform.followers && platform.followers > 0 && (
+                        <p className="text-muted-foreground mt-1">
                           {platform.followers.toLocaleString()} followers
                         </p>
                       )}
@@ -85,14 +94,18 @@ export default function SocialPage() {
                       <h3 className="font-semibold">Achievements</h3>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      {platform.achievements.map((achievement, idx) => (
-                        <span
-                          key={idx}
-                          className="rounded-full bg-primary/10 border border-primary/20 px-4 py-2 text-sm text-primary font-light"
-                        >
-                          {achievement}
-                        </span>
-                      ))}
+                    {platform.achievements.map((achievement, idx) => (
+                      <motion.span
+                        key={idx}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: idx * 0.1 }}
+                        whileHover={{ scale: 1.1, y: -2 }}
+                        className="rounded-full bg-primary/10 border border-primary/20 px-4 py-2 text-sm text-primary font-light cursor-default"
+                      >
+                        {achievement}
+                      </motion.span>
+                    ))}
                     </div>
                   </div>
                 )}
@@ -105,29 +118,51 @@ export default function SocialPage() {
                       {platform.recentPosts.map((post, idx) => {
                         const imageUrl = post.image ? urlFor(post.image) : null
                         return (
-                          <a
+                          <motion.a
                             key={idx}
                             href={post.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="group overflow-hidden rounded-lg bg-background transition-transform hover:scale-105"
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: idx * 0.05 }}
+                            whileHover={{ scale: 1.05, y: -4 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="group overflow-hidden rounded-lg bg-background floating border border-border/30"
                           >
                             {imageUrl && (
-                              <div className="relative aspect-square w-full">
+                              <motion.div
+                                whileHover={{ scale: 1.1 }}
+                                transition={{ duration: 0.5 }}
+                                className="relative aspect-square w-full overflow-hidden"
+                              >
                                 <Image
                                   src={imageUrl}
                                   alt={post.caption || 'Social media post'}
                                   fill
-                                  className="object-cover"
+                                  className="object-cover image-zoom"
                                 />
-                              </div>
+                                <motion.div
+                                  initial={{ opacity: 0 }}
+                                  whileHover={{ opacity: 1 }}
+                                  className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent flex items-end"
+                                >
+                                  <motion.p
+                                    initial={{ y: 20, opacity: 0 }}
+                                    whileHover={{ y: 0, opacity: 1 }}
+                                    className="p-3 text-sm text-white font-medium"
+                                  >
+                                    View Post →
+                                  </motion.p>
+                                </motion.div>
+                              </motion.div>
                             )}
                             {post.caption && (
                               <p className="p-3 text-sm text-muted-foreground line-clamp-2">
                                 {post.caption}
                               </p>
                             )}
-                          </a>
+                          </motion.a>
                         )
                       })}
                     </div>

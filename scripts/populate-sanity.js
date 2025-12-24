@@ -11,6 +11,7 @@ import { createClient } from '@sanity/client'
 import dotenv from 'dotenv'
 import { fileURLToPath } from 'url'
 import { dirname, resolve } from 'path'
+import fetch from 'node-fetch'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -27,6 +28,112 @@ const client = createClient({
   token: process.env.SANITY_API_TOKEN,
   apiVersion: '2024-01-01',
 })
+
+// Function to fetch follower count from Instagram
+async function fetchInstagramFollowers(username) {
+  try {
+    // Remove @ if present
+    const cleanUsername = username.replace('@', '')
+    const url = `https://www.instagram.com/${cleanUsername}/`
+    
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+      }
+    })
+    
+    if (!response.ok) {
+      console.log(`   ⚠️  Could not fetch Instagram data (status: ${response.status})`)
+      return null
+    }
+    
+    const html = await response.text()
+    
+    // Try to extract follower count from JSON-LD or meta tags
+    // Instagram embeds data in script tags
+    const jsonMatch = html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)
+    if (jsonMatch) {
+      try {
+        const data = JSON.parse(jsonMatch[1])
+        if (data.mainEntityOfPage && data.mainEntityOfPage.interactionStatistic) {
+          const followers = data.mainEntityOfPage.interactionStatistic.find(
+            stat => stat.interactionType === 'https://schema.org/FollowAction'
+          )
+          if (followers && followers.userInteractionCount) {
+            return parseInt(followers.userInteractionCount)
+          }
+        }
+      } catch (e) {
+        // Continue to next method
+      }
+    }
+    
+    // Alternative: Look for follower count in meta tags or embedded JSON
+    const followerMatch = html.match(/"edge_followed_by":\s*{\s*"count":\s*(\d+)/)
+    if (followerMatch) {
+      return parseInt(followerMatch[1])
+    }
+    
+    // Another pattern Instagram uses
+    const patternMatch = html.match(/"followers":\s*(\d+)/)
+    if (patternMatch) {
+      return parseInt(patternMatch[1])
+    }
+    
+    return null
+  } catch (error) {
+    console.log(`   ⚠️  Error fetching Instagram followers: ${error.message}`)
+    return null
+  }
+}
+
+// Function to fetch follower count from TikTok
+async function fetchTikTokFollowers(username) {
+  try {
+    // Remove @ if present
+    const cleanUsername = username.replace('@', '')
+    const url = `https://www.tiktok.com/@${cleanUsername}`
+    
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+      }
+    })
+    
+    if (!response.ok) {
+      console.log(`   ⚠️  Could not fetch TikTok data (status: ${response.status})`)
+      return null
+    }
+    
+    const html = await response.text()
+    
+    // TikTok embeds data in script tags with __UNIVERSAL_DATA_FOR_REHYDRATION__
+    const dataMatch = html.match(/<script id="__UNIVERSAL_DATA_FOR_REHYDRATION__"[^>]*>(.*?)<\/script>/s)
+    if (dataMatch) {
+      try {
+        const data = JSON.parse(dataMatch[1])
+        // Navigate through TikTok's data structure
+        const userInfo = data?.__DEFAULT_SCOPE__?.['webapp.user-detail']?.userInfo
+        if (userInfo?.stats?.followerCount) {
+          return parseInt(userInfo.stats.followerCount)
+        }
+      } catch (e) {
+        // Continue to next method
+      }
+    }
+    
+    // Alternative pattern
+    const followerMatch = html.match(/"followerCount":\s*(\d+)/)
+    if (followerMatch) {
+      return parseInt(followerMatch[1])
+    }
+    
+    return null
+  } catch (error) {
+    console.log(`   ⚠️  Error fetching TikTok followers: ${error.message}`)
+    return null
+  }
+}
 
 async function populateSanity() {
   if (!process.env.SANITY_API_TOKEN) {
@@ -77,8 +184,22 @@ async function populateSanity() {
     ]
 
     for (const music of musicEntries) {
-      const result = await client.create(music)
-      console.log(`   ✅ Created: ${music.title}`)
+      // Check if entry already exists
+      const existing = await client.fetch(
+        `*[_type == "music" && title == $title && artist == $artist][0]`,
+        { title: music.title, artist: music.artist }
+      )
+      
+      if (existing) {
+        await client
+          .patch(existing._id)
+          .set(music)
+          .commit()
+        console.log(`   ✅ Updated: ${music.title}`)
+      } else {
+        const result = await client.create(music)
+        console.log(`   ✅ Created: ${music.title}`)
+      }
     }
 
     // Food entries
@@ -115,8 +236,22 @@ async function populateSanity() {
     ]
 
     for (const food of foodEntries) {
-      const result = await client.create(food)
-      console.log(`   ✅ Created: ${food.title}`)
+      // Check if entry already exists
+      const existing = await client.fetch(
+        `*[_type == "food" && title == $title && eventType == $eventType][0]`,
+        { title: food.title, eventType: food.eventType || '' }
+      )
+      
+      if (existing) {
+        await client
+          .patch(existing._id)
+          .set(food)
+          .commit()
+        console.log(`   ✅ Updated: ${food.title}`)
+      } else {
+        const result = await client.create(food)
+        console.log(`   ✅ Created: ${food.title}`)
+      }
     }
 
     // Host entries
@@ -149,87 +284,166 @@ async function populateSanity() {
     ]
 
     for (const host of hostEntries) {
-      const result = await client.create(host)
-      console.log(`   ✅ Created: ${host.title}`)
+      // Check if entry already exists
+      const existing = await client.fetch(
+        `*[_type == "host" && title == $title && eventDate == $eventDate][0]`,
+        { title: host.title, eventDate: host.eventDate || '' }
+      )
+      
+      if (existing) {
+        await client
+          .patch(existing._id)
+          .set(host)
+          .commit()
+        console.log(`   ✅ Updated: ${host.title}`)
+      } else {
+        const result = await client.create(host)
+        console.log(`   ✅ Created: ${host.title}`)
+      }
     }
 
     // Social entries
     console.log('\n📱 Creating Social Media entries...')
+    console.log('   Fetching follower counts...')
+    
+    const instagramHandle = '@priscilladinatoko'
+    const tiktokHandle = '@priscilladinatoko'
+    
+    console.log(`   📸 Fetching Instagram followers for ${instagramHandle}...`)
+    const instagramFollowers = await fetchInstagramFollowers(instagramHandle)
+    
+    console.log(`   🎵 Fetching TikTok followers for ${tiktokHandle}...`)
+    const tiktokFollowers = await fetchTikTokFollowers(tiktokHandle)
+    
     const socialEntries = [
       {
         _type: 'social',
         platform: 'Instagram',
-        followers: 125000,
+        handle: instagramHandle,
+        url: 'https://instagram.com/priscilladinatoko',
+        followers: instagramFollowers || 0,
         achievements: [
-          '100K followers milestone',
+          '100K+ followers milestone',
           'Featured in Instagram\'s "Creators to Watch"',
-          'Top 10 Food Content Creator',
+          'Top Food & Lifestyle Content Creator',
+          'Verified Creator Account',
+          'Collaborated with major brands',
         ],
         recentPosts: [
           {
-            caption: 'Behind the scenes at today\'s shoot! 🎬✨',
-            url: 'https://instagram.com/p/example1',
+            caption: 'Behind the scenes at today\'s cooking shoot! 🎬✨ Can\'t wait to share this new recipe with you all. What dish should I make next? 👨‍🍳',
+            url: 'https://instagram.com/p/recent1',
           },
           {
-            caption: 'New recipe coming soon! Can you guess what it is? 👨‍🍳',
-            url: 'https://instagram.com/p/example2',
+            caption: 'New music project coming soon! 🎵 Working on something special that combines my love for food, music, and storytelling. Stay tuned! ✨',
+            url: 'https://instagram.com/p/recent2',
           },
-        ],
-      },
-      {
-        _type: 'social',
-        platform: 'Twitter',
-        followers: 45000,
-        achievements: [
-          'Verified account',
-          'Top Food & Culture Influencer',
-        ],
-        recentPosts: [
           {
-            caption: 'Excited to announce my new music project! 🎵',
-            url: 'https://twitter.com/status/example1',
+            caption: 'Hosted an amazing event last night! The energy was incredible. Grateful for every opportunity to connect with amazing people. 🙏✨',
+            url: 'https://instagram.com/p/recent3',
+          },
+          {
+            caption: 'Quick cooking tip that changed everything! 🔥 Sometimes the simplest techniques make the biggest difference. Try this at home!',
+            url: 'https://instagram.com/p/recent4',
+          },
+          {
+            caption: 'From the kitchen to the stage - this is my journey. Food, music, hosting, and everything in between. What inspires you? 💫',
+            url: 'https://instagram.com/p/recent5',
           },
         ],
       },
       {
         _type: 'social',
         platform: 'TikTok',
-        followers: 280000,
+        handle: tiktokHandle,
+        url: 'https://tiktok.com/@priscilladinatoko',
+        followers: tiktokFollowers || 0,
         achievements: [
-          '250K followers milestone',
+          '100K+ followers milestone',
           'Viral video: 2M+ views',
           'Featured on TikTok\'s Discover page',
+          'Top Food & Culture Creator',
+          'Trending multiple times',
         ],
         recentPosts: [
           {
-            caption: 'Quick cooking tip that changed everything! 🔥',
-            url: 'https://tiktok.com/@priscilla/video/example1',
+            caption: 'Quick cooking tip that changed everything! 🔥 #cookingtips #chef #foodtok',
+            url: 'https://tiktok.com/@priscilladinatoko/video/recent1',
+          },
+          {
+            caption: 'POV: You\'re a multi-talented creator trying to explain what you do 😅 #multitalented #creator #food #music #host',
+            url: 'https://tiktok.com/@priscilladinatoko/video/recent2',
+          },
+          {
+            caption: 'Behind the scenes of hosting an event! The prep work is REAL 🎤✨ #hosting #events #behindthescenes',
+            url: 'https://tiktok.com/@priscilladinatoko/video/recent3',
+          },
+          {
+            caption: 'New recipe alert! This one is going to blow your mind 🍽️✨ #recipe #cooking #foodie',
+            url: 'https://tiktok.com/@priscilladinatoko/video/recent4',
+          },
+          {
+            caption: 'When someone asks what I do for a living... 😂 #multihyphenate #creator #food #music',
+            url: 'https://tiktok.com/@priscilladinatoko/video/recent5',
           },
         ],
       },
     ]
 
     for (const social of socialEntries) {
-      const result = await client.create(social)
-      console.log(`   ✅ Created: ${social.platform}`)
+      // Check if entry already exists
+      const existing = await client.fetch(
+        `*[_type == "social" && platform == $platform][0]`,
+        { platform: social.platform }
+      )
+      
+      if (existing) {
+        // Update existing entry, preserving follower count if it was manually set
+        const updateData = {
+          ...social,
+          followers: existing.followers || social.followers || 0, // Keep existing follower count if set
+        }
+        await client
+          .patch(existing._id)
+          .set(updateData)
+          .commit()
+        const followerText = updateData.followers > 0 
+          ? ` (${updateData.followers.toLocaleString()} followers)`
+          : ' (count unavailable - update manually)'
+        console.log(`   ✅ Updated: ${social.platform}${followerText}`)
+      } else {
+        // Create new entry
+        const result = await client.create(social)
+        const followerText = social.followers > 0 
+          ? ` (${social.followers.toLocaleString()} followers)`
+          : ' (count unavailable - update manually)'
+        console.log(`   ✅ Created: ${social.platform}${followerText}`)
+      }
     }
 
     // Global settings
-    console.log('\n🌐 Creating Global Settings...')
+    console.log('\n🌐 Creating/Updating Global Settings...')
     const globalSettings = {
       _type: 'global',
       siteName: 'Priscilla Dina Toko',
       socialLinks: [
         { platform: 'Instagram', url: 'https://instagram.com/priscilladinatoko' },
-        { platform: 'Twitter', url: 'https://twitter.com/priscilladinatoko' },
         { platform: 'TikTok', url: 'https://tiktok.com/@priscilladinatoko' },
-        { platform: 'YouTube', url: 'https://youtube.com/@priscilladinatoko' },
-        { platform: 'Spotify', url: 'https://open.spotify.com/artist/priscilladinatoko' },
       ],
     }
 
-    await client.create(globalSettings)
-    console.log('   ✅ Created: Global Settings')
+    const existingGlobal = await client.fetch(`*[_type == "global"][0]`)
+    
+    if (existingGlobal) {
+      await client
+        .patch(existingGlobal._id)
+        .set(globalSettings)
+        .commit()
+      console.log('   ✅ Updated: Global Settings')
+    } else {
+      await client.create(globalSettings)
+      console.log('   ✅ Created: Global Settings')
+    }
 
     console.log('\n🎉 Successfully populated Sanity CMS!')
     console.log(`📊 Created ${musicEntries.length + foodEntries.length + hostEntries.length + socialEntries.length + 1} documents`)

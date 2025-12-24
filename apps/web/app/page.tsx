@@ -2,8 +2,10 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+import { useGlobalSettings } from '@/lib/sanity/hooks'
 
 export default function HomePage() {
+  const { data: settings } = useGlobalSettings()
   const domains = [
     { href: '/music', label: 'Music', emoji: '🎵' },
     { href: '/host', label: 'Host', emoji: '🎤' },
@@ -27,6 +29,19 @@ export default function HomePage() {
           </p>
         </motion.div>
 
+        {settings?.bio && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="max-w-2xl mx-auto"
+          >
+            <p className="text-lg md:text-xl text-foreground/80 font-light leading-relaxed">
+              {settings.bio}
+            </p>
+          </motion.div>
+        )}
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -40,15 +55,34 @@ export default function HomePage() {
               className="group"
             >
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 + index * 0.1 }}
-                className="floating floating-hover rounded-2xl bg-white/80 backdrop-blur-sm p-8 border border-border/50 hover:border-primary/30 transition-all duration-300"
+                initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ delay: 0.3 + index * 0.1, type: "spring", stiffness: 100 }}
+                whileHover={{ y: -8, scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+                className="floating floating-hover rounded-2xl bg-white/80 backdrop-blur-sm p-8 border border-border/50 hover:border-primary/30 transition-all duration-300 cursor-pointer"
               >
-                <div className="text-4xl mb-3">{domain.emoji}</div>
-                <div className="text-lg font-medium text-foreground group-hover:text-primary transition-colors">
+                <motion.div
+                  animate={{ 
+                    rotate: [0, 5, -5, 0],
+                    scale: [1, 1.1, 1]
+                  }}
+                  transition={{ 
+                    duration: 2, 
+                    repeat: Infinity, 
+                    repeatDelay: 3,
+                    delay: index * 0.2
+                  }}
+                  className="text-4xl mb-3"
+                >
+                  {domain.emoji}
+                </motion.div>
+                <motion.div
+                  whileHover={{ x: 4 }}
+                  className="text-lg font-medium text-foreground group-hover:text-primary transition-colors"
+                >
                   {domain.label}
-                </div>
+                </motion.div>
               </motion.div>
             </Link>
           ))}

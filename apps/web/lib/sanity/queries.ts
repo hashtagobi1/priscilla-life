@@ -39,7 +39,13 @@ export const foodQueries = {
     _id,
     title,
     description,
-    images[],
+    media[] {
+      _type,
+      type,
+      image,
+      videoUrl,
+      caption
+    },
     eventType,
     date
   }`,
@@ -48,7 +54,13 @@ export const foodQueries = {
     _id,
     title,
     description,
-    images[],
+    media[] {
+      _type,
+      type,
+      image,
+      videoUrl,
+      caption
+    },
     eventType,
     date
   }`,
@@ -57,7 +69,13 @@ export const foodQueries = {
     _id,
     title,
     description,
-    images[],
+    media[] {
+      _type,
+      type,
+      image,
+      videoUrl,
+      caption
+    },
     eventType,
     date
   }`,
@@ -83,11 +101,12 @@ export const hostQueries = {
     testimonial
   }`,
   
-  getShowreel: `*[_type == "host"] | order(eventDate desc)[0] {
+  getShowreel: `*[_type == "host" && isShowreel == true][0] {
     _id,
     title,
     description,
     videoUrl,
+    isShowreel,
     eventDate,
     testimonial
   }`,
@@ -98,6 +117,8 @@ export const socialQueries = {
   getAll: `*[_type == "social"] | order(_createdAt desc) {
     _id,
     platform,
+    handle,
+    url,
     followers,
     achievements,
     recentPosts[] {
@@ -110,6 +131,8 @@ export const socialQueries = {
   getByPlatform: `*[_type == "social" && platform == $platform][0] {
     _id,
     platform,
+    handle,
+    url,
     followers,
     achievements,
     recentPosts[] {
@@ -125,6 +148,7 @@ export const globalQueries = {
   getSettings: `*[_type == "global"][0] {
     _id,
     siteName,
+    bio,
     socialLinks[] {
       platform,
       url
@@ -162,7 +186,26 @@ export async function fetchHostById(id: string) {
 }
 
 export async function fetchShowreel() {
-  return await sanityClient.fetch(hostQueries.getShowreel)
+  // First try to get the marked showreel
+  const showreel = await sanityClient.fetch(hostQueries.getShowreel)
+  
+  // If no showreel is marked, fallback to the most recent event with a video
+  if (!showreel) {
+    const fallback = await sanityClient.fetch(
+      `*[_type == "host" && defined(videoUrl)] | order(eventDate desc)[0] {
+        _id,
+        title,
+        description,
+        videoUrl,
+        isShowreel,
+        eventDate,
+        testimonial
+      }`
+    )
+    return fallback || null
+  }
+  
+  return showreel
 }
 
 export async function fetchSocial() {

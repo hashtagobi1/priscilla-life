@@ -9,7 +9,7 @@ export default function MusicPage() {
   const { data: music, isLoading, error } = useMusic()
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="container mx-auto px-4 py-12" data-theme="music">
       {/* Header */}
       <div className="mb-12 text-center">
         <motion.div
@@ -66,13 +66,18 @@ export default function MusicPage() {
         </p>
         <div className="flex flex-wrap justify-center gap-3">
           {['Spotify', 'Apple Music', 'YouTube', 'SoundCloud'].map(
-            (platform) => (
-              <div
+            (platform, idx) => (
+              <motion.div
                 key={platform}
-                className="rounded-full bg-secondary/50 px-6 py-3 font-medium text-sm border border-border/30"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: idx * 0.1 }}
+                whileHover={{ scale: 1.1, y: -4 }}
+                whileTap={{ scale: 0.95 }}
+                className="rounded-full bg-secondary/50 px-6 py-3 font-medium text-sm border border-border/30 cursor-pointer floating-hover"
               >
                 {platform}
-              </div>
+              </motion.div>
             )
           )}
         </div>

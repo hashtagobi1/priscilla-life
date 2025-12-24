@@ -9,6 +9,12 @@ export default {
       type: 'string',
     },
     {
+      name: 'bio',
+      title: 'Bio (Homepage)',
+      type: 'text',
+      description: 'A short paragraph about Priscilla that appears on the homepage',
+    },
+    {
       name: 'socialLinks',
       title: 'Social Links',
       type: 'array',
@@ -16,7 +22,16 @@ export default {
         {
           type: 'object',
           fields: [
-            { name: 'platform', type: 'string' },
+            {
+              name: 'platform',
+              type: 'string',
+              options: {
+                list: [
+                  { title: 'Instagram', value: 'Instagram' },
+                  { title: 'TikTok', value: 'TikTok' },
+                ],
+              },
+            },
             { name: 'url', type: 'url' },
           ],
         },

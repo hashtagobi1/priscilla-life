@@ -24,11 +24,19 @@ export interface Music {
 }
 
 // Food Types
+export interface FoodMedia {
+  _type?: string
+  type: 'image' | 'video'
+  image?: SanityImage
+  videoUrl?: string
+  caption?: string
+}
+
 export interface Food {
   _id: string
   title: string
   description?: string
-  images?: SanityImage[]
+  media?: FoodMedia[]
   eventType?: string
   date?: string
 }
@@ -39,6 +47,7 @@ export interface Host {
   title: string
   description?: string
   videoUrl?: string
+  isShowreel?: boolean
   eventDate?: string
   testimonial?: string
 }
@@ -53,6 +62,8 @@ export interface SocialPost {
 export interface Social {
   _id: string
   platform: string
+  handle?: string
+  url?: string
   followers?: number
   achievements?: string[]
   recentPosts?: SocialPost[]
@@ -67,6 +78,7 @@ export interface SocialLink {
 export interface GlobalSettings {
   _id: string
   siteName?: string
+  bio?: string
   socialLinks?: SocialLink[]
 }
 

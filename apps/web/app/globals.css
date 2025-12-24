@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    /* Soft Pastel Palette */
+    /* Soft Pastel Palette - Default */
     --background: 0 0% 99%;
     --foreground: 240 10% 20%;
     
@@ -38,6 +38,42 @@
     --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.06), 0 4px 6px -4px rgb(0 0 0 / 0.06);
     --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.08);
   }
+
+  /* Music Theme - Soft Purple/Lavender */
+  [data-theme="music"] {
+    --primary: 280 35% 68%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 270 25% 94%;
+    --accent: 290 30% 85%;
+    --muted: 275 20% 96%;
+  }
+
+  /* Host Theme - Soft Rose/Pink */
+  [data-theme="host"] {
+    --primary: 340 35% 68%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 330 25% 94%;
+    --accent: 350 30% 85%;
+    --muted: 335 20% 96%;
+  }
+
+  /* Food Theme - Warm Peach/Orange */
+  [data-theme="food"] {
+    --primary: 25 40% 65%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 20 30% 94%;
+    --accent: 30 35% 88%;
+    --muted: 22 25% 96%;
+  }
+
+  /* Social Theme - Soft Teal/Mint */
+  [data-theme="social"] {
+    --primary: 170 35% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 160 25% 94%;
+    --accent: 175 30% 85%;
+    --muted: 165 20% 96%;
+  }
 }
 
 @layer base {
@@ -60,11 +96,67 @@
     box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
   }
   .floating-hover {
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .floating-hover:hover {
-    transform: translateY(-4px);
+    transform: translateY(-4px) scale(1.02);
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Enhanced button interactions */
+  .btn-interactive {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .btn-interactive::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+  .btn-interactive:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+  .btn-interactive:active {
+    transform: scale(0.98);
+  }
+
+  /* Smooth image zoom */
+  .image-zoom {
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .image-zoom:hover {
+    transform: scale(1.05);
+  }
+
+  /* Pulse animation for icons */
+  .pulse-soft {
+    animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  @keyframes pulse-soft {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  /* Gradient text on hover */
+  .gradient-text {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: all 0.3s ease;
   }
 }
 

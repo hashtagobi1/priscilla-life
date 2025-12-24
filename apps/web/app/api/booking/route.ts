@@ -6,7 +6,7 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { name, email, phone, eventType, eventDate, guestCount, message } = body
+    const { name, email, phone, eventType, eventDate, guestCount, budget, message } = body
 
     // Validate required fields
     if (!name || !email || !eventType || !eventDate) {
@@ -29,6 +29,7 @@ export async function POST(request: NextRequest) {
         <p><strong>Event Type:</strong> ${eventType}</p>
         <p><strong>Event Date:</strong> ${eventDate}</p>
         <p><strong>Guest Count:</strong> ${guestCount || 'Not specified'}</p>
+        <p><strong>Prospective Budget:</strong> ${budget || 'Not specified'}</p>
         <p><strong>Message:</strong></p>
         <p>${message || 'No message provided'}</p>
       `,

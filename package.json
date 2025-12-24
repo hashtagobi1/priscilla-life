@@ -9,7 +9,8 @@
     "start": "pnpm --filter web start",
     "studio": "pnpm --filter studio dev",
     "type-check": "pnpm -r type-check",
-    "populate": "pnpm --filter populate-sanity populate"
+    "populate": "pnpm --filter populate-sanity populate",
+    "cleanup": "pnpm --filter populate-sanity cleanup"
   }
 }
 
